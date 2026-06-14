@@ -10,6 +10,7 @@ dist/
 build/
 .turbo/
 coverage/
+*.tsbuildinfo
 
 # Expo and React Native
 .expo/

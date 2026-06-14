@@ -6,10 +6,10 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "tsc --noEmit -p tsconfig.json",
+    "lint": "next typegen && tsc --noEmit -p tsconfig.json",
     "start": "next start",
     "test": "echo \"No tests configured for @vukasync/web yet.\"",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "next typegen && tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "@vukasync/types": "workspace:*",

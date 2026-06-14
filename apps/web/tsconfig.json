@@ -1,11 +1,5 @@
 {
   "extends": "@vukasync/config/tsconfig/next.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"]
-    }
-  },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
