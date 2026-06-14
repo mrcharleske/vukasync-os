@@ -1,0 +1,8 @@
+{
+  "extends": "@vukasync/config/tsconfig/package.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src/**/*.ts"]
+}

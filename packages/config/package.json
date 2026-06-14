@@ -1,0 +1,15 @@
+{
+  "name": "@vukasync/config",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Shared VukaSync OS tooling and TypeScript configuration.",
+  "files": [
+    "tsconfig"
+  ],
+  "exports": {
+    "./tsconfig/base.json": "./tsconfig/base.json",
+    "./tsconfig/next.json": "./tsconfig/next.json",
+    "./tsconfig/package.json": "./tsconfig/package.json",
+    "./tsconfig/react-native.json": "./tsconfig/react-native.json"
+  }
+}

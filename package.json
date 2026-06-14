@@ -1,0 +1,27 @@
+{
+  "name": "vukasync-os",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Documentation-first foundation for VukaSync OS.",
+  "packageManager": "pnpm@10.33.3",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "docs": "echo \"Documentation lives in docs/\"",
+    "lint": "turbo lint",
+    "status": "echo \"VukaSync OS foundation: Phase 3B dev-only Supabase integration and documentation.\"",
+    "supabase": "supabase",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "supabase": "^2.106.0",
+    "turbo": "^2.9.18",
+    "typescript": "^6.0.3"
+  }
+}
