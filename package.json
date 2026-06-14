@@ -1,0 +1,14 @@
+{
+  "name": "vukasync-os",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Documentation-first foundation for VukaSync OS.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "docs": "echo \"Documentation lives in docs/\"",
+    "status": "echo \"VukaSync OS foundation: documentation and placeholders only.\""
+  }
+}
