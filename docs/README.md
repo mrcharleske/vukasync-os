@@ -40,6 +40,8 @@ delivery standards, and operational expectations.
   and implementation expectations.
 - [Repository structure](engineering/repository-structure.md): planned
   Turborepo layout and ownership boundaries.
+- [Local development](engineering/local-development.md): dev-only setup flow for
+  workspace tooling and Supabase development values.
 - [Supabase migration strategy](engineering/supabase-migration-strategy.md):
   recommended migration sequencing and environment promotion approach.
 - Future documents should cover environment setup, local development, release
@@ -49,6 +51,8 @@ delivery standards, and operational expectations.
 
 - [Client lifecycle](operations/client-lifecycle.md): how clients move from
   onboarding through delivery, reporting, support, and renewal.
+- [Environments](operations/environments.md): development, staging, production,
+  deployment flow, migration policy, and secret management.
 - Future documents should cover support workflows, admin workflows, reporting
   cadence, meeting scheduling, and content operations.
 
@@ -57,6 +61,7 @@ delivery standards, and operational expectations.
 - [ADR 0001: Documentation-first foundation](decisions/0001-documentation-first-foundation.md)
 - [ADR 0002: Technical foundation scaffold](decisions/0002-technical-foundation-scaffold.md)
 - [ADR 0003: Workspace-based multi-tenant backend architecture](decisions/0003-workspace-multitenant-backend-architecture.md)
+- [ADR 0004: Dev-only Supabase environment management](decisions/0004-dev-only-supabase-environment-management.md)
 
 Architecture Decision Records (ADRs) should be added for meaningful technical
 choices so future contributors can understand why decisions were made.

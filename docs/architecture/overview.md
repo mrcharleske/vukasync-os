@@ -10,6 +10,10 @@ OpenAI, or n8n workflows.
 Phase 3A designs the backend architecture for the existing Supabase
 environments without applying migrations or implementing business UI.
 
+Phase 3B introduces dev-only Supabase integration utilities and environment
+management documentation for `vukasync-dev` without connecting staging or
+production.
+
 ## Planned system boundaries
 
 ```text
@@ -71,3 +75,9 @@ and migration strategy:
 - [Database ERD](database-erd.md)
 - [Row Level Security](row-level-security.md)
 - [Supabase migration strategy](../engineering/supabase-migration-strategy.md)
+
+Phase 3B addresses environment management and local development setup:
+
+- [Environments](../operations/environments.md)
+- [Local development](../engineering/local-development.md)
+- [ADR 0004: Dev-only Supabase environment management](../decisions/0004-dev-only-supabase-environment-management.md)

@@ -3,6 +3,7 @@
 Shared workspace packages live here.
 
 - `config`: shared tooling and TypeScript configuration.
+- `supabase`: shared Supabase client utilities.
 - `ui`: shared design tokens and future design system primitives.
 - `types`: shared TypeScript contracts.
 - `utils`: shared framework-neutral utilities.

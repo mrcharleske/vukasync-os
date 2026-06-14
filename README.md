@@ -5,10 +5,10 @@ It is designed to combine automation with human expertise so clients can see
 transparent progress, measurable outcomes, and clear communication across all
 services.
 
-This repository is currently in Phase 2: Technical Foundation. It contains the
-documentation-first foundation plus a minimal Turborepo scaffold for the web
-app, mobile app, and shared packages. Business features have not been
-implemented yet.
+This repository is currently in Phase 3B: Supabase Integration and Environment
+Management. It contains the documentation-first foundation, the technical
+foundation, backend architecture design, and dev-only Supabase integration
+utilities. Business features have not been implemented yet.
 
 ## Product direction
 
@@ -59,13 +59,16 @@ Start with the documentation index:
 - [Row Level Security](docs/architecture/row-level-security.md)
 - [Supabase migration strategy](docs/engineering/supabase-migration-strategy.md)
 - [Workspace backend architecture decision](docs/decisions/0003-workspace-multitenant-backend-architecture.md)
+- [Environment management](docs/operations/environments.md)
+- [Local development](docs/engineering/local-development.md)
+- [Dev-only Supabase environment decision](docs/decisions/0004-dev-only-supabase-environment-management.md)
 
 ## Repository status
 
-The foundation intentionally contains only technical scaffolding and
-documentation. Product implementation should begin after the data model,
-authentication model, payment flows, Supabase configuration, and module
-boundaries are agreed.
+The foundation intentionally contains only technical scaffolding, documentation,
+and dev-only Supabase utility wiring. Product implementation should begin after
+the data model, authentication model, payment flows, Supabase migrations, and
+module boundaries are agreed.
 
 ## Workspace commands
 

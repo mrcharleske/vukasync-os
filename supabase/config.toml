@@ -1,0 +1,11 @@
+# Supabase CLI migration-tooling configuration for VukaSync OS local development.
+# Phase 3B uses vukasync-dev only. Do not link this workspace to staging or
+# production projects. Runtime services, Auth flows, and business schema are not
+# configured in this phase.
+
+project_id = "vukasync-dev"
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15

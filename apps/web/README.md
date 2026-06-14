@@ -9,14 +9,15 @@ This is the Next.js App Router web application for VukaSync OS.
 - Tailwind CSS configuration.
 - Shared package consumption from `@vukasync/types`, `@vukasync/ui`, and
   `@vukasync/utils`.
+- Dev-only Supabase client utility wrapper for future `vukasync-dev` work.
 
 ## Not included yet
 
 - Business features.
-- Supabase configuration.
 - Authentication.
 - Billing or payment providers.
 - Client portal modules.
+- Supabase authentication, migrations, or business queries.
 
 ## Commands
 

@@ -14,6 +14,7 @@ data model are agreed.
 │   └── mobile/     Expo React Native app
 ├── packages/
 │   ├── config/     shared tooling configuration
+│   ├── supabase/   shared Supabase client utilities
 │   ├── ui/         shared design system components
 │   ├── types/      shared domain contracts
 │   └── utils/      shared utilities
@@ -34,6 +35,8 @@ data model are agreed.
   configuration.
 - `packages/ui` should hold reusable presentation components that are stable
   across apps.
+- `packages/supabase` should hold shared Supabase client construction utilities
+  and environment validation helpers.
 - `packages/types` should hold shared TypeScript contracts that represent
   product concepts.
 - `packages/utils` should hold framework-neutral utilities.
@@ -50,5 +53,7 @@ features until the relevant product and architecture documents are in place.
 - Use pnpm for dependency management.
 - Use Turborepo for workspace orchestration.
 - Keep shared package APIs small until real cross-app needs are proven.
-- Keep Supabase, authentication, payments, and service modules out of the
-  scaffold until their designs are documented.
+- Keep authentication, payments, and service modules out of the scaffold until
+  their designs are documented.
+- Keep Supabase staging and production connections out of local development
+  until promotion procedures are approved.

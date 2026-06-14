@@ -6,6 +6,7 @@ export type AppSurface = "web" | "mobile";
 
 export type WorkspacePackageName =
   | "@vukasync/config"
+  | "@vukasync/supabase"
   | "@vukasync/types"
   | "@vukasync/ui"
   | "@vukasync/utils";
