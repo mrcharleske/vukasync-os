@@ -5,8 +5,10 @@ It is designed to combine automation with human expertise so clients can see
 transparent progress, measurable outcomes, and clear communication across all
 services.
 
-This repository is currently in a documentation-first foundation stage. No
-application code has been generated yet.
+This repository is currently in Phase 2: Technical Foundation. It contains the
+documentation-first foundation plus a minimal Turborepo scaffold for the web
+app, mobile app, and shared packages. Business features have not been
+implemented yet.
 
 ## Product direction
 
@@ -51,9 +53,22 @@ Start with the documentation index:
 - [Engineering standards](docs/engineering/standards.md)
 - [Repository structure](docs/engineering/repository-structure.md)
 - [Initial architecture decision](docs/decisions/0001-documentation-first-foundation.md)
+- [Technical foundation decision](docs/decisions/0002-technical-foundation-scaffold.md)
 
 ## Repository status
 
-The foundation intentionally contains documentation and workspace placeholders
-only. Application implementation should begin after the architecture, data
-model, authentication model, payment flows, and module boundaries are agreed.
+The foundation intentionally contains only technical scaffolding and
+documentation. Product implementation should begin after the data model,
+authentication model, payment flows, Supabase configuration, and module
+boundaries are agreed.
+
+## Workspace commands
+
+Use pnpm from the repository root:
+
+```bash
+pnpm install
+pnpm dev
+pnpm typecheck
+pnpm build
+```

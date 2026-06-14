@@ -1,0 +1,29 @@
+{
+  "name": "@vukasync/web",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Next.js App Router web application for VukaSync OS.",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "tsc --noEmit -p tsconfig.json",
+    "start": "next start",
+    "test": "echo \"No tests configured for @vukasync/web yet.\"",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@vukasync/types": "workspace:*",
+    "@vukasync/ui": "workspace:*",
+    "@vukasync/utils": "workspace:*",
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vukasync/config": "workspace:*",
+    "tailwindcss": "^4.3.1"
+  }
+}

@@ -3,6 +3,10 @@
 VukaSync OS is planned as a Turborepo monorepo with web, mobile, shared
 packages, Supabase-backed services, and external integrations.
 
+Phase 2 establishes the technical scaffold for the monorepo only. It does not
+configure Supabase, authentication, billing providers, analytics providers,
+OpenAI, or n8n workflows.
+
 ## Planned system boundaries
 
 ```text
@@ -43,7 +47,7 @@ Integrations
 
 ## Areas requiring detailed design
 
-Before application implementation begins, the project should define:
+Before business feature implementation begins, the project should define:
 
 - Authentication and organization membership model.
 - Row-level security and authorization rules.

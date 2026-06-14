@@ -1,6 +1,29 @@
-# Mobile App Placeholder
+# VukaSync OS Mobile
 
-The future Expo React Native application will live here.
+This is the Expo Managed Workflow mobile application for VukaSync OS.
 
-No application code has been generated yet. Implementation should start after
-the shared product contracts and authentication model are documented.
+## Current scope
+
+- Technical foundation only.
+- Expo managed app scaffold.
+- NativeWind configuration.
+- Shared package consumption from `@vukasync/types`, `@vukasync/ui`, and
+  `@vukasync/utils`.
+
+## Not included yet
+
+- Business features.
+- Supabase configuration.
+- Authentication.
+- Billing or payment providers.
+- Client portal modules.
+
+## Commands
+
+Run from the repository root:
+
+```bash
+pnpm --filter @vukasync/mobile dev
+pnpm --filter @vukasync/mobile typecheck
+pnpm --filter @vukasync/mobile build
+```

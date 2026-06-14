@@ -1,8 +1,9 @@
 # Repository Structure
 
 VukaSync OS is planned as a Turborepo monorepo. The current repository contains
-documentation and placeholders only; application code should be added after the
-core architecture and data model are agreed.
+documentation plus the Phase 2 technical scaffold for web, mobile, and shared
+packages. Business feature code should be added after the core architecture and
+data model are agreed.
 
 ## Planned layout
 
@@ -38,8 +39,16 @@ core architecture and data model are agreed.
 - `packages/utils` should hold framework-neutral utilities.
 - `packages/config` should hold shared tooling and style configuration.
 
-## Current placeholder policy
+## Current scaffold policy
 
-Placeholder directories exist to communicate the intended monorepo shape. They
-should not accumulate implementation code until the relevant architecture
-documents are in place.
+The scaffold exists to validate workspace tooling, TypeScript configuration,
+styling setup, and package consumption. It should not accumulate business
+features until the relevant product and architecture documents are in place.
+
+## Package manager and orchestration
+
+- Use pnpm for dependency management.
+- Use Turborepo for workspace orchestration.
+- Keep shared package APIs small until real cross-app needs are proven.
+- Keep Supabase, authentication, payments, and service modules out of the
+  scaffold until their designs are documented.

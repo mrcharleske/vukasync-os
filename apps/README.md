@@ -1,8 +1,11 @@
 # Apps
 
-Future application work should live here.
+Application work lives here.
 
-- `web`: planned Next.js client portal and admin experience.
-- `mobile`: planned Expo React Native mobile experience.
+- `web`: Next.js App Router web app for the future client portal and admin
+  experience.
+- `mobile`: Expo Managed Workflow mobile app.
 
-These directories currently contain placeholders only.
+The current apps are technical foundation shells only. They validate the
+workspace, TypeScript, styling, and shared package setup before business
+features are implemented.

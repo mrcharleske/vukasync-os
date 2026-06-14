@@ -47,6 +47,7 @@ delivery standards, and operational expectations.
 ### Decisions
 
 - [ADR 0001: Documentation-first foundation](decisions/0001-documentation-first-foundation.md)
+- [ADR 0002: Technical foundation scaffold](decisions/0002-technical-foundation-scaffold.md)
 
 Architecture Decision Records (ADRs) should be added for meaningful technical
 choices so future contributors can understand why decisions were made.

@@ -1,0 +1,13 @@
+{
+  "extends": "@vukasync/config/tsconfig/react-native.json",
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "include": [
+    "App.tsx",
+    "nativewind-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
+}
