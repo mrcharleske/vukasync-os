@@ -54,6 +54,11 @@ Start with the documentation index:
 - [Repository structure](docs/engineering/repository-structure.md)
 - [Initial architecture decision](docs/decisions/0001-documentation-first-foundation.md)
 - [Technical foundation decision](docs/decisions/0002-technical-foundation-scaffold.md)
+- [Backend architecture](docs/architecture/backend-architecture.md)
+- [Database ERD](docs/architecture/database-erd.md)
+- [Row Level Security](docs/architecture/row-level-security.md)
+- [Supabase migration strategy](docs/engineering/supabase-migration-strategy.md)
+- [Workspace backend architecture decision](docs/decisions/0003-workspace-multitenant-backend-architecture.md)
 
 ## Repository status
 

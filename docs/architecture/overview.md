@@ -7,6 +7,9 @@ Phase 2 establishes the technical scaffold for the monorepo only. It does not
 configure Supabase, authentication, billing providers, analytics providers,
 OpenAI, or n8n workflows.
 
+Phase 3A designs the backend architecture for the existing Supabase
+environments without applying migrations or implementing business UI.
+
 ## Planned system boundaries
 
 ```text
@@ -60,3 +63,11 @@ Before business feature implementation begins, the project should define:
 - File storage access model.
 - Audit logging strategy.
 - Environment and secret management.
+
+Phase 3A addresses the backend architecture, database ERD, RLS policy approach,
+and migration strategy:
+
+- [Backend architecture](backend-architecture.md)
+- [Database ERD](database-erd.md)
+- [Row Level Security](row-level-security.md)
+- [Supabase migration strategy](../engineering/supabase-migration-strategy.md)

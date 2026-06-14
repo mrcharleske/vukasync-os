@@ -24,6 +24,12 @@ delivery standards, and operational expectations.
 
 - [Overview](architecture/overview.md): high-level system boundaries and
   integration direction.
+- [Backend architecture](architecture/backend-architecture.md): workspace-based
+  multi-tenant Supabase backend design.
+- [Database ERD](architecture/database-erd.md): entity relationships, keys,
+  indexes, and domain tables.
+- [Row Level Security](architecture/row-level-security.md): recommended RLS
+  helper functions and policy patterns.
 - Future documents should cover authentication, authorization, tenancy, data
   model, payment flows, analytics ingestion, file storage, notifications, and
   reporting.
@@ -34,6 +40,8 @@ delivery standards, and operational expectations.
   and implementation expectations.
 - [Repository structure](engineering/repository-structure.md): planned
   Turborepo layout and ownership boundaries.
+- [Supabase migration strategy](engineering/supabase-migration-strategy.md):
+  recommended migration sequencing and environment promotion approach.
 - Future documents should cover environment setup, local development, release
   process, testing strategy, observability, and incident response.
 
@@ -48,6 +56,7 @@ delivery standards, and operational expectations.
 
 - [ADR 0001: Documentation-first foundation](decisions/0001-documentation-first-foundation.md)
 - [ADR 0002: Technical foundation scaffold](decisions/0002-technical-foundation-scaffold.md)
+- [ADR 0003: Workspace-based multi-tenant backend architecture](decisions/0003-workspace-multitenant-backend-architecture.md)
 
 Architecture Decision Records (ADRs) should be added for meaningful technical
 choices so future contributors can understand why decisions were made.
