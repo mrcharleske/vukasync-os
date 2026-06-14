@@ -14,6 +14,9 @@ Phase 3B introduces dev-only Supabase integration utilities and environment
 management documentation for `vukasync-dev` without connecting staging or
 production.
 
+Phase 3C introduces the initial database backbone and authentication foundation
+for `vukasync-dev` only.
+
 ## Planned system boundaries
 
 ```text
@@ -81,3 +84,8 @@ Phase 3B addresses environment management and local development setup:
 - [Environments](../operations/environments.md)
 - [Local development](../engineering/local-development.md)
 - [ADR 0004: Dev-only Supabase environment management](../decisions/0004-dev-only-supabase-environment-management.md)
+
+Phase 3C addresses the database backbone:
+
+- [Database backbone and authentication foundation](database-backbone-auth-foundation.md)
+- [ADR 0005: Database backbone and authentication foundation](../decisions/0005-database-backbone-auth-foundation.md)

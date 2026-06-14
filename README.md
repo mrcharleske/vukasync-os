@@ -5,10 +5,11 @@ It is designed to combine automation with human expertise so clients can see
 transparent progress, measurable outcomes, and clear communication across all
 services.
 
-This repository is currently in Phase 3B: Supabase Integration and Environment
-Management. It contains the documentation-first foundation, the technical
-foundation, backend architecture design, and dev-only Supabase integration
-utilities. Business features have not been implemented yet.
+This repository is currently in Phase 3C: Database Backbone and Authentication
+Foundation. It contains the documentation-first foundation, technical
+foundation, backend architecture design, dev-only Supabase integration
+utilities, and the initial database backbone for `vukasync-dev`. Business
+features have not been implemented yet.
 
 ## Product direction
 
@@ -62,13 +63,15 @@ Start with the documentation index:
 - [Environment management](docs/operations/environments.md)
 - [Local development](docs/engineering/local-development.md)
 - [Dev-only Supabase environment decision](docs/decisions/0004-dev-only-supabase-environment-management.md)
+- [Database backbone and authentication foundation](docs/architecture/database-backbone-auth-foundation.md)
+- [Database backbone decision](docs/decisions/0005-database-backbone-auth-foundation.md)
 
 ## Repository status
 
 The foundation intentionally contains only technical scaffolding, documentation,
-and dev-only Supabase utility wiring. Product implementation should begin after
-the data model, authentication model, payment flows, Supabase migrations, and
-module boundaries are agreed.
+dev-only Supabase utility wiring, and database backbone migrations. Product
+implementation should begin after authentication UI, payment flows, and module
+boundaries are agreed.
 
 ## Workspace commands
 

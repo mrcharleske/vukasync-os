@@ -30,6 +30,8 @@ delivery standards, and operational expectations.
   indexes, and domain tables.
 - [Row Level Security](architecture/row-level-security.md): recommended RLS
   helper functions and policy patterns.
+- [Database backbone and authentication foundation](architecture/database-backbone-auth-foundation.md):
+  Phase 3C schema, RLS, seeds, and type generation notes.
 - Future documents should cover authentication, authorization, tenancy, data
   model, payment flows, analytics ingestion, file storage, notifications, and
   reporting.
@@ -62,6 +64,7 @@ delivery standards, and operational expectations.
 - [ADR 0002: Technical foundation scaffold](decisions/0002-technical-foundation-scaffold.md)
 - [ADR 0003: Workspace-based multi-tenant backend architecture](decisions/0003-workspace-multitenant-backend-architecture.md)
 - [ADR 0004: Dev-only Supabase environment management](decisions/0004-dev-only-supabase-environment-management.md)
+- [ADR 0005: Database backbone and authentication foundation](decisions/0005-database-backbone-auth-foundation.md)
 
 Architecture Decision Records (ADRs) should be added for meaningful technical
 choices so future contributors can understand why decisions were made.

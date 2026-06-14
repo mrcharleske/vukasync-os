@@ -2,19 +2,19 @@
 
 This directory prepares VukaSync OS for Supabase migration tooling.
 
-## Phase 3B scope
+## Scope
 
 Included:
 
 - Supabase CLI configuration.
 - Migration directory placeholder.
 - Local development guidance for `vukasync-dev`.
+- Phase 3C database backbone migrations for `vukasync-dev`.
 
 Not included:
 
-- SQL migrations.
-- Applying migrations.
-- Authentication configuration.
+- Applying migrations to staging or production.
+- Authentication UI.
 - Storage policies.
 - Edge Functions.
 - Staging or production linking.
@@ -36,10 +36,18 @@ Do not link this repository to:
 
 ## Migrations
 
-Future migrations will live in:
+Migrations live in:
 
 ```text
 supabase/migrations/
 ```
 
-No migration files are created in Phase 3B.
+Phase 3C migrations must be applied only to `vukasync-dev`.
+
+## Type generation
+
+After applying migrations to `vukasync-dev`, regenerate database types:
+
+```bash
+pnpm supabase gen types typescript --linked --schema public > packages/types/src/database.ts
+```

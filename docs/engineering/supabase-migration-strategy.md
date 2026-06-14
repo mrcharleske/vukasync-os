@@ -1,7 +1,7 @@
 # Supabase Migration Strategy
 
 This document recommends how VukaSync OS should introduce Supabase migrations.
-It is documentation only; no migrations are applied in Phase 3A.
+Phase 3C adds the initial database backbone migrations for `vukasync-dev` only.
 
 ## Supabase environments
 
@@ -53,6 +53,22 @@ supabase/
     000013_create_audit_logs.sql
     000014_create_rls_helpers.sql
     000015_enable_rls_and_policies.sql
+```
+
+Phase 3C implements a focused initial sequence:
+
+```text
+supabase/
+  migrations/
+    000001_enable_extensions.sql
+    000002_create_shared_functions.sql
+    000003_create_profiles_and_platform_roles.sql
+    000004_create_workspaces.sql
+    000005_create_services.sql
+    000006_create_subscriptions.sql
+    000007_create_audit_logs.sql
+    000008_seed_foundation_data.sql
+    000009_enable_rls_policies.sql
 ```
 
 ## Migration responsibilities
@@ -236,6 +252,12 @@ Recommended target:
 
 ```text
 packages/types/src/database.ts
+```
+
+Phase 3C command:
+
+```bash
+pnpm supabase gen types typescript --linked --schema public > packages/types/src/database.ts
 ```
 
 Recommended process:
