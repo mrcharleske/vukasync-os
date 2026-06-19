@@ -1,11 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "../../../packages/types/src/database";
-
-type WorkspaceMembership = Database["public"]["Tables"]["workspace_members"]["Row"];
-type Workspace = Database["public"]["Tables"]["workspaces"]["Row"];
 
 export async function getFirstWorkspaceMembership(
-  supabase: SupabaseClient<Database>,
+  supabase: SupabaseClient,
   profileId: string
 ) {
   const { data, error } = await supabase
@@ -14,7 +10,7 @@ export async function getFirstWorkspaceMembership(
     .eq("profile_id", profileId)
     .order("created_at", { ascending: true })
     .limit(1)
-    .maybeSingle<Pick<WorkspaceMembership, "workspace_id" | "role">>();
+    .maybeSingle();
 
   if (error) {
     throw new Error(`Failed to load workspace membership: ${error.message}`);
@@ -24,14 +20,14 @@ export async function getFirstWorkspaceMembership(
 }
 
 export async function getWorkspaceById(
-  supabase: SupabaseClient<Database>,
+  supabase: SupabaseClient,
   workspaceId: string
 ) {
   const { data, error } = await supabase
     .from("workspaces")
     .select("id, name, slug, status")
     .eq("id", workspaceId)
-    .maybeSingle<Pick<Workspace, "id" | "name" | "slug" | "status">>();
+    .maybeSingle();
 
   if (error) {
     throw new Error(`Failed to load workspace: ${error.message}`);
@@ -46,7 +42,8 @@ export function toWorkspaceSlug(input: string) {
     .trim()
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
 
   return `${base}-${Math.random().toString(36).slice(2, 8)}`;
 }

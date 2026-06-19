@@ -1,6 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import type { Database } from "../../../packages/types/src/database";
 
 const PROTECTED_PATH_PREFIXES = ["/onboarding", "/command-center"];
 
@@ -18,7 +17,7 @@ export async function updateAuthSession(request: NextRequest) {
     throw new Error("Missing SUPABASE_URL or SUPABASE_ANON_KEY.");
   }
 
-  const supabase = createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll() {
         return request.cookies.getAll();

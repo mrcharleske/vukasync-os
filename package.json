@@ -5,13 +5,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "security:check": "pnpm audit --audit-level=high",
+    "db:seed:apply": "node --env-file=.env scripts/apply-foundation-seed.mjs",
     "db:verify:migrations": "node --env-file=.env scripts/verify-migrations.mjs",
     "db:verify:seed": "node --env-file=.env scripts/verify-seed-data.mjs",
-    "db:types:generate": "supabase gen types typescript --linked --schema public > packages/types/src/database.ts"
+    "db:types:generate": "sh -c 'tmp=$(mktemp) && supabase gen types typescript --linked --schema public > \"$tmp\" && mv \"$tmp\" packages/types/src/database.ts'"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",

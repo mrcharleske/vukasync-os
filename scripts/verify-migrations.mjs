@@ -48,15 +48,16 @@ const expectedTables = [
 ];
 
 for (const tableName of expectedTables) {
-  const { count, error } = await supabase
+  const { data, error } = await supabase
     .from(tableName)
-    .select("*", { head: true, count: "exact" });
+    .select("*")
+    .limit(1);
 
   if (error) {
     throw new Error(`Table verification failed for "${tableName}": ${error.message}`);
   }
 
-  console.log(`table ok: ${tableName} (rows=${count ?? 0})`);
+  console.log(`table ok: ${tableName} (sample_rows=${data?.length ?? 0})`);
 }
 
 console.log("migration verification passed");

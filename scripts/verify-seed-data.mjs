@@ -18,7 +18,7 @@ const checks = [
 for (const check of checks) {
   const { count, error } = await supabase
     .from(check.table)
-    .select("*", { head: true, count: "exact" });
+    .select("*", { count: "exact" });
 
   if (error) {
     throw new Error(`Seed verification failed for "${check.table}": ${error.message}`);
