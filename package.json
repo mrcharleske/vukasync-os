@@ -1,5 +1,35 @@
 {
+  "name": "vukasync-os",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "security:check": "pnpm audit --audit-level=high",
+    "db:verify:migrations": "node --env-file=.env scripts/verify-migrations.mjs",
+    "db:verify:seed": "node --env-file=.env scripts/verify-seed-data.mjs",
+    "db:types:generate": "supabase gen types typescript --linked --schema public > packages/types/src/database.ts"
+  },
   "dependencies": {
-    "@supabase/supabase-js": "^2.108.2"
-  }
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.108.2",
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitest/coverage-v8": "^4.1.9",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.9",
+    "supabase": "^2.107.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
+  },
+  "packageManager": "pnpm@10.33.3"
 }
