@@ -25,6 +25,11 @@ Do not commit `.env` files.
 - Client/browser-safe key usage: `src/lib/supabase/client.ts`
 - Server-only admin key usage: `src/lib/supabase/admin.ts`
 
+Example imports in this repo:
+
+- Frontend module importing `supabase`: `src/frontend/supabase-usage.ts`
+- Server module importing `supabaseAdmin`: `src/server/supabase-admin-usage.ts`
+
 ### Security rules
 
 - Safe to expose in frontend: `SUPABASE_ANON_KEY` (still keep private in chat/logs).
