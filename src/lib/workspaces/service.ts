@@ -76,9 +76,9 @@ export async function getWorkspaceServices(
   supabase: SupabaseClient,
   workspaceId: string
 ) {
-  const { data, error } = await supabase
+  const { data: rows, error } = await supabase
     .from("services")
-    .select("id, status, catalog_service:service_catalog(id, code, name)")
+    .select("id, status, catalog_service_id")
     .eq("workspace_id", workspaceId)
     .eq("status", "ACTIVE")
     .order("created_at", { ascending: true });
@@ -87,7 +87,27 @@ export async function getWorkspaceServices(
     throw new Error(`Failed to load workspace services: ${error.message}`);
   }
 
-  return data ?? [];
+  if (!rows || rows.length === 0) {
+    return [];
+  }
+
+  const serviceIds = rows.map((row) => row.catalog_service_id);
+  const { data: catalogRows, error: catalogError } = await supabase
+    .from("service_catalog")
+    .select("id, code, name")
+    .in("id", serviceIds);
+
+  if (catalogError) {
+    throw new Error(`Failed to load service catalog entries: ${catalogError.message}`);
+  }
+
+  const catalogById = new Map((catalogRows ?? []).map((service) => [service.id, service]));
+
+  return rows.map((row) => ({
+    id: row.id,
+    status: row.status,
+    catalog_service: catalogById.get(row.catalog_service_id) ?? null
+  }));
 }
 
 export async function getWorkspaceMemberCount(
@@ -110,11 +130,9 @@ export async function getLatestWorkspaceSubscription(
   supabase: SupabaseClient,
   workspaceId: string
 ) {
-  const { data, error } = await supabase
+  const { data: subscription, error } = await supabase
     .from("subscriptions")
-    .select(
-      "id, status, starts_at, ends_at, subscription_plan:subscription_plans(name, code)"
-    )
+    .select("id, status, starts_at, ends_at, plan_id")
     .eq("workspace_id", workspaceId)
     .order("created_at", { ascending: false })
     .limit(1)
@@ -124,7 +142,24 @@ export async function getLatestWorkspaceSubscription(
     throw new Error(`Failed to load workspace subscription: ${error.message}`);
   }
 
-  return data;
+  if (!subscription) {
+    return null;
+  }
+
+  const { data: subscriptionPlan, error: planError } = await supabase
+    .from("subscription_plans")
+    .select("id, name, code")
+    .eq("id", subscription.plan_id)
+    .maybeSingle();
+
+  if (planError) {
+    throw new Error(`Failed to load subscription plan: ${planError.message}`);
+  }
+
+  return {
+    ...subscription,
+    subscription_plan: subscriptionPlan
+  };
 }
 
 export async function getRecentWorkspaceActivity(

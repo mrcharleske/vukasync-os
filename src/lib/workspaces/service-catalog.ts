@@ -5,7 +5,7 @@ export const PHASE4_SERVICE_CODES = [
   "GROWTH_SERVICES"
 ] as const;
 
-const SERVICE_ORDER = new Map(
+const SERVICE_ORDER: Map<string, number> = new Map(
   PHASE4_SERVICE_CODES.map((code, index) => [code, index])
 );
 
