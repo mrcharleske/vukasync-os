@@ -2,11 +2,40 @@
 
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "../../lib/supabase/server";
-import { toWorkspaceSlug } from "../../lib/workspaces/service";
+import {
+  getActiveWorkspaceServiceCount,
+  toWorkspaceSlug
+} from "../../lib/workspaces/service";
+import { resolveWorkspaceRoute } from "../../lib/workspaces/context";
 
 function toErrorPath(message: string) {
   const params = new URLSearchParams({ error: message });
   return `/onboarding?${params.toString()}`;
+}
+
+async function insertAuditEvent(
+  supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>,
+  payload: {
+    workspaceId: string;
+    actorProfileId: string;
+    action: string;
+    entityType: string;
+    entityId: string;
+    metadata?: Record<string, unknown>;
+  }
+) {
+  const { error } = await supabase.from("audit_logs").insert({
+    workspace_id: payload.workspaceId,
+    actor_profile_id: payload.actorProfileId,
+    action: payload.action,
+    entity_type: payload.entityType,
+    entity_id: payload.entityId,
+    metadata: payload.metadata ?? {}
+  });
+
+  if (error) {
+    throw new Error(`Failed to log audit event: ${error.message}`);
+  }
 }
 
 export async function createWorkspace(formData: FormData) {
@@ -44,17 +73,41 @@ export async function createWorkspace(formData: FormData) {
     redirect(toErrorPath(workspaceError?.message ?? "Failed to create workspace."));
   }
 
-  const { error: membershipError } = await supabase.from("workspace_members").insert({
-    workspace_id: workspace.id,
-    profile_id: user.id,
-    role: "OWNER"
-  });
+  const { error: membershipError } = await supabase.from("workspace_members").upsert(
+    {
+      workspace_id: workspace.id,
+      profile_id: user.id,
+      role: "OWNER"
+    },
+    {
+      onConflict: "workspace_id,profile_id"
+    }
+  );
 
   if (membershipError) {
     redirect(toErrorPath(membershipError.message));
   }
 
-  redirect(`/command-center?workspace=${workspace.id}`);
+  try {
+    await insertAuditEvent(supabase, {
+      workspaceId: workspace.id,
+      actorProfileId: user.id,
+      action: "WORKSPACE_CREATED",
+      entityType: "workspaces",
+      entityId: workspace.id,
+      metadata: {
+        workspace_name: workspaceName
+      }
+    });
+  } catch (error) {
+    redirect(
+      toErrorPath(
+        error instanceof Error ? error.message : "Failed to create workspace."
+      )
+    );
+  }
+
+  redirect(`/service-selection?workspace=${workspace.id}`);
 }
 
 export async function acceptInvitation(formData: FormData) {
@@ -71,6 +124,10 @@ export async function acceptInvitation(formData: FormData) {
 
   if (!user) {
     redirect("/login");
+  }
+
+  if (!user.email_confirmed_at) {
+    redirect("/auth/verify");
   }
 
   const { data: invitation, error: invitationError } = await supabase
@@ -95,11 +152,16 @@ export async function acceptInvitation(formData: FormData) {
     redirect(toErrorPath("Invitation email does not match this account."));
   }
 
-  const { error: membershipError } = await supabase.from("workspace_members").upsert({
-    workspace_id: invitation.workspace_id,
-    profile_id: user.id,
-    role: invitation.role
-  });
+  const { error: membershipError } = await supabase.from("workspace_members").upsert(
+    {
+      workspace_id: invitation.workspace_id,
+      profile_id: user.id,
+      role: invitation.role
+    },
+    {
+      onConflict: "workspace_id,profile_id"
+    }
+  );
 
   if (membershipError) {
     redirect(toErrorPath(membershipError.message));
@@ -117,5 +179,36 @@ export async function acceptInvitation(formData: FormData) {
     redirect(toErrorPath(updateInvitationError.message));
   }
 
-  redirect(`/command-center?workspace=${invitation.workspace_id}`);
+  try {
+    await insertAuditEvent(supabase, {
+      workspaceId: invitation.workspace_id,
+      actorProfileId: user.id,
+      action: "INVITATION_ACCEPTED",
+      entityType: "workspace_invitations",
+      entityId: invitation.id,
+      metadata: {
+        invitation_email: invitation.email
+      }
+    });
+  } catch (error) {
+    redirect(
+      toErrorPath(
+        error instanceof Error
+          ? error.message
+          : "Failed to accept invitation."
+      )
+    );
+  }
+
+  const activeServiceCount = await getActiveWorkspaceServiceCount(
+    supabase,
+    invitation.workspace_id
+  );
+
+  redirect(
+    resolveWorkspaceRoute({
+      workspaceId: invitation.workspace_id,
+      activeServiceCount
+    })
+  );
 }

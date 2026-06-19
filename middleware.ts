@@ -8,6 +8,8 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/onboarding/:path*",
-    "/command-center/:path*"
+    "/service-selection/:path*",
+    "/command-center/:path*",
+    "/team/invite/:path*"
   ]
 };

@@ -1,6 +1,6 @@
 # vukasync-os
 
-Phase 3D foundation for VukaSync: database activation assets, authentication flows, and first localhost journey.
+Phase 4 foundation for VukaSync: database activation assets, authentication flows, workspace onboarding, service selection, and business command center.
 
 ## Environment
 
@@ -38,7 +38,9 @@ Public:
 Protected:
 
 - `/onboarding`
+- `/service-selection`
 - `/command-center`
+- `/team/invite`
 
 Auth utilities:
 
@@ -66,6 +68,8 @@ Migrations are defined in:
 - `supabase/migrations/000007_create_audit_logs.sql`
 - `supabase/migrations/000008_seed_foundation_data.sql`
 - `supabase/migrations/000009_enable_rls_policies.sql`
+- `supabase/migrations/000010_allow_invitation_acceptance_audit.sql`
+- `supabase/migrations/000011_seed_phase4_services.sql`
 
 Operational docs:
 

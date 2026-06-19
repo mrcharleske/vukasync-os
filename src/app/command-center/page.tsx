@@ -1,29 +1,38 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import {
+  AppShell,
+  EmptyState,
+  PageHeader,
+  SectionCard
+} from "@/components/app-shell";
+import { StatusBadge } from "@/components/status-badge";
 import { requireAuthenticatedUser } from "../../lib/auth/guards";
 import {
-  getFirstWorkspaceMembership,
-  getWorkspaceById
+  getLatestWorkspaceSubscription,
+  getRecentWorkspaceActivity,
+  getWorkspaceById,
+  getWorkspaceMemberCount,
+  getWorkspaceServices
 } from "../../lib/workspaces/service";
+import {
+  getWorkspaceRouteContext,
+  resolveWorkspaceRoute
+} from "../../lib/workspaces/context";
 
-type CommandCenterProps = {
-  searchParams: Promise<{
-    workspace?: string;
-  }>;
-};
-
-export default async function CommandCenterPage({
-  searchParams
-}: CommandCenterProps) {
+export default async function CommandCenterPage() {
   const { supabase, user } = await requireAuthenticatedUser();
-  const params = await searchParams;
 
-  const membership = await getFirstWorkspaceMembership(supabase, user.id);
-  if (!membership) {
+  const context = await getWorkspaceRouteContext(supabase, user.id);
+  if (!context.workspaceId) {
     redirect("/onboarding");
   }
 
-  const workspaceId = params?.workspace ?? membership.workspace_id;
+  if (context.activeServiceCount === 0) {
+    redirect(resolveWorkspaceRoute(context));
+  }
+
+  const workspaceId = context.workspaceId;
   const workspace = await getWorkspaceById(supabase, workspaceId);
   if (!workspace) {
     redirect("/onboarding");
@@ -35,43 +44,156 @@ export default async function CommandCenterPage({
     .eq("id", user.id)
     .maybeSingle();
 
-  const userName = profile?.full_name ?? user.email ?? "Founder";
-  const greeting = `Good Morning, ${userName} 👋`;
+  const userName = profile?.full_name ?? user.email ?? "there";
+  const nowHour = new Date().getHours();
+  const daytimeGreeting =
+    nowHour < 12 ? "Good morning" : nowHour < 18 ? "Good afternoon" : "Good evening";
+  const greeting = `${daytimeGreeting}, ${userName}.`;
+
+  const [activeServices, latestSubscription, workspaceMemberCount, recentActivity] =
+    await Promise.all([
+      getWorkspaceServices(supabase, workspaceId),
+      getLatestWorkspaceSubscription(supabase, workspaceId),
+      getWorkspaceMemberCount(supabase, workspaceId),
+      getRecentWorkspaceActivity(supabase, workspaceId)
+    ]);
 
   return (
-    <main>
-      <h1>{greeting}</h1>
-      <p>Welcome to your VukaSync Business Command Center.</p>
+    <AppShell>
+      <PageHeader
+        title="Business Command Center"
+        description={greeting}
+        actions={
+          <div className="inline-actions">
+            <StatusBadge label={workspace.name} />
+            <StatusBadge
+              label={user.email_confirmed_at ? "Email Verified" : "Verification Pending"}
+              tone={user.email_confirmed_at ? "success" : "warning"}
+            />
+          </div>
+        }
+      />
 
-      <div className="card">
-        <p>
-          <strong>Workspace:</strong> {workspace.name}
-        </p>
-        <p>
-          <strong>Workspace status:</strong> {workspace.status}
-        </p>
-        <p>
-          <strong>Account status:</strong>{" "}
-          {user.email_confirmed_at ? "Email Verified" : "Verification Pending"}
-        </p>
-      </div>
+      <SectionCard
+        title="Workspace Overview"
+        description="Your workspace setup and team snapshot."
+      >
+        <div className="metric-grid">
+          <div className="metric">
+            <p className="metric-label">Workspace</p>
+            <p className="metric-value">{workspace.name}</p>
+          </div>
+          <div className="metric">
+            <p className="metric-label">Status</p>
+            <p className="metric-value">{workspace.status}</p>
+          </div>
+          <div className="metric">
+            <p className="metric-label">Team Members</p>
+            <p className="metric-value">{workspaceMemberCount}</p>
+          </div>
+        </div>
+      </SectionCard>
 
-      <div className="card">
-        <h2>Quick actions</h2>
-        <ul>
-          <li>
-            <Link href="/onboarding">Create Workspace</Link>
-          </li>
-          <li>
-            <Link href="/onboarding">Accept Invitation</Link>
-          </li>
-        </ul>
+      <SectionCard
+        title="Services"
+        description="Active services assigned to this workspace."
+      >
+        {activeServices.length === 0 ? (
+          <EmptyState
+            title="No active services yet"
+            description="Add at least one service to begin delivery workflows."
+          />
+        ) : (
+          <ul className="simple-list">
+            {activeServices.map((service) => (
+              <li key={service.id}>{service.catalog_service?.name ?? service.id}</li>
+            ))}
+          </ul>
+        )}
+      </SectionCard>
+
+      <SectionCard
+        title="Subscription"
+        description="Current plan and billing lifecycle status."
+        id="subscription"
+      >
+        {latestSubscription ? (
+          <div className="metric-grid">
+            <div className="metric">
+              <p className="metric-label">Plan</p>
+              <p className="metric-value">
+                {latestSubscription.subscription_plan?.name ?? "Custom"}
+              </p>
+            </div>
+            <div className="metric">
+              <p className="metric-label">Status</p>
+              <p className="metric-value">{latestSubscription.status}</p>
+            </div>
+          </div>
+        ) : (
+          <EmptyState
+            title="No subscription found"
+            description="Subscription details will appear after plan assignment."
+          />
+        )}
+      </SectionCard>
+
+      <SectionCard title="Activity Feed" description="Recent workspace activity summary.">
+        {recentActivity.length === 0 ? (
+          <EmptyState
+            title="No recent activity"
+            description="Activity events will appear here once actions are performed."
+          />
+        ) : (
+          <ul className="activity-list">
+            {recentActivity.map((activity) => (
+              <li key={activity.id}>
+                <p className="activity-title">{activity.action.replaceAll("_", " ")}</p>
+                <p className="activity-meta">
+                  {activity.entity_type} ·{" "}
+                  {new Date(activity.created_at).toLocaleString("en-US")}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </SectionCard>
+
+      <SectionCard title="Quick Actions" description="Common workspace operations.">
+        <div className="quick-actions-grid">
+          <Link
+            className="quick-action-link"
+            href={`/service-selection?workspace=${workspaceId}&mode=manage`}
+          >
+            Add Service
+          </Link>
+          <Link className="quick-action-link" href="/team/invite">
+            Invite Team Member
+          </Link>
+          <Link className="quick-action-link" href="/command-center#subscription">
+            View Subscription
+          </Link>
+          <Link className="quick-action-link" href="/command-center#chatbot">
+            Open Chatbot
+          </Link>
+        </div>
         <form action="/auth/logout" method="post">
           <button className="button secondary" type="submit">
             Logout
           </button>
         </form>
-      </div>
-    </main>
+      </SectionCard>
+
+      <SectionCard
+        id="chatbot"
+        title="Chatbot"
+        description="AI assistant entrypoint placeholder."
+      >
+        <EmptyState
+          title="Chatbot will be available soon"
+          description="Use this section for guided Q&A and operational support in a future phase."
+        />
+      </SectionCard>
+    </AppShell>
   );
 }

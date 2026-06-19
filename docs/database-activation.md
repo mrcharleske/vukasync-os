@@ -21,6 +21,8 @@ Run in order via `supabase db push` (CLI applies by filename order):
 7. `000007_create_audit_logs.sql`
 8. `000008_seed_foundation_data.sql`
 9. `000009_enable_rls_policies.sql`
+10. `000010_allow_invitation_acceptance_audit.sql`
+11. `000011_seed_phase4_services.sql`
 
 ## 3) Verify migrations and tables
 

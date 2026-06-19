@@ -1,7 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PROTECTED_PATH_PREFIXES = ["/onboarding", "/command-center"];
+const PROTECTED_PATH_PREFIXES = [
+  "/onboarding",
+  "/service-selection",
+  "/command-center",
+  "/team/invite"
+];
 
 function isProtectedPath(pathname: string) {
   return PROTECTED_PATH_PREFIXES.some((path) => pathname.startsWith(path));
