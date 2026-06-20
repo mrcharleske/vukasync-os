@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { supabaseAdmin } from "../../lib/supabase/admin";
 import { createSupabaseServerClient } from "../../lib/supabase/server";
 import {
   getActiveWorkspaceServiceCount,
@@ -14,7 +15,9 @@ function toErrorPath(message: string) {
 }
 
 async function insertAuditEvent(
-  supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>,
+  client: {
+    from: typeof supabaseAdmin.from;
+  },
   payload: {
     workspaceId: string;
     actorProfileId: string;
@@ -24,7 +27,7 @@ async function insertAuditEvent(
     metadata?: Record<string, unknown>;
   }
 ) {
-  const { error } = await supabase.from("audit_logs").insert({
+  const { error } = await client.from("audit_logs").insert({
     workspace_id: payload.workspaceId,
     actor_profile_id: payload.actorProfileId,
     action: payload.action,
@@ -59,7 +62,7 @@ export async function createWorkspace(formData: FormData) {
   }
 
   const slug = toWorkspaceSlug(workspaceName);
-  const { data: workspace, error: workspaceError } = await supabase
+  const { data: workspace, error: workspaceError } = await supabaseAdmin
     .from("workspaces")
     .insert({
       name: workspaceName,
@@ -73,7 +76,7 @@ export async function createWorkspace(formData: FormData) {
     redirect(toErrorPath(workspaceError?.message ?? "Failed to create workspace."));
   }
 
-  const { error: membershipError } = await supabase.from("workspace_members").upsert(
+  const { error: membershipError } = await supabaseAdmin.from("workspace_members").upsert(
     {
       workspace_id: workspace.id,
       profile_id: user.id,
@@ -89,7 +92,7 @@ export async function createWorkspace(formData: FormData) {
   }
 
   try {
-    await insertAuditEvent(supabase, {
+    await insertAuditEvent(supabaseAdmin, {
       workspaceId: workspace.id,
       actorProfileId: user.id,
       action: "WORKSPACE_CREATED",
@@ -130,7 +133,7 @@ export async function acceptInvitation(formData: FormData) {
     redirect("/auth/verify");
   }
 
-  const { data: invitation, error: invitationError } = await supabase
+  const { data: invitation, error: invitationError } = await supabaseAdmin
     .from("workspace_invitations")
     .select("id, workspace_id, role, email, status, expires_at")
     .eq("token", token)
@@ -152,7 +155,7 @@ export async function acceptInvitation(formData: FormData) {
     redirect(toErrorPath("Invitation email does not match this account."));
   }
 
-  const { error: membershipError } = await supabase.from("workspace_members").upsert(
+  const { error: membershipError } = await supabaseAdmin.from("workspace_members").upsert(
     {
       workspace_id: invitation.workspace_id,
       profile_id: user.id,
@@ -167,7 +170,7 @@ export async function acceptInvitation(formData: FormData) {
     redirect(toErrorPath(membershipError.message));
   }
 
-  const { error: updateInvitationError } = await supabase
+  const { error: updateInvitationError } = await supabaseAdmin
     .from("workspace_invitations")
     .update({
       status: "ACCEPTED",
@@ -180,7 +183,7 @@ export async function acceptInvitation(formData: FormData) {
   }
 
   try {
-    await insertAuditEvent(supabase, {
+    await insertAuditEvent(supabaseAdmin, {
       workspaceId: invitation.workspace_id,
       actorProfileId: user.id,
       action: "INVITATION_ACCEPTED",

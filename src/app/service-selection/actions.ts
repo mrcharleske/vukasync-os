@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { supabaseAdmin } from "../../lib/supabase/admin";
 import { createSupabaseServerClient } from "../../lib/supabase/server";
 import {
   getActiveWorkspaceServiceCount,
@@ -66,7 +67,7 @@ export async function saveSelectedServices(formData: FormData) {
     redirect(toErrorPath("One or more selected services were not found.", workspaceId));
   }
 
-  const { error: deleteError } = await supabase
+  const { error: deleteError } = await supabaseAdmin
     .from("services")
     .delete()
     .eq("workspace_id", workspaceId);
@@ -75,7 +76,7 @@ export async function saveSelectedServices(formData: FormData) {
     redirect(toErrorPath(deleteError.message, workspaceId));
   }
 
-  const { data: insertedRows, error: insertError } = await supabase
+  const { data: insertedRows, error: insertError } = await supabaseAdmin
     .from("services")
     .insert(
       selectedServiceIds.map((catalogServiceId) => ({
@@ -91,7 +92,7 @@ export async function saveSelectedServices(formData: FormData) {
   }
 
   if (insertedRows && insertedRows.length > 0) {
-    const { error: auditError } = await supabase.from("audit_logs").insert(
+    const { error: auditError } = await supabaseAdmin.from("audit_logs").insert(
       insertedRows.map((row) => ({
         workspace_id: workspaceId,
         actor_profile_id: user.id,
