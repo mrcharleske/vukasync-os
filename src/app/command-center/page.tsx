@@ -1,12 +1,11 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import {
-  AppShell,
-  EmptyState,
-  PageHeader,
-  SectionCard
-} from "@/components/app-shell";
-import { StatusBadge } from "@/components/status-badge";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHeader } from "@/components/ui/page-header";
+import { SectionHeader } from "@/components/ui/section-header";
 import { requireAuthenticatedUser } from "../../lib/auth/guards";
 import {
   getLatestWorkspaceSubscription,
@@ -47,8 +46,12 @@ export default async function CommandCenterPage() {
   const userName = profile?.full_name ?? user.email ?? "there";
   const nowHour = new Date().getHours();
   const daytimeGreeting =
-    nowHour < 12 ? "Good morning" : nowHour < 18 ? "Good afternoon" : "Good evening";
-  const greeting = `${daytimeGreeting}, ${userName}.`;
+    nowHour < 12
+      ? "Good Morning"
+      : nowHour < 18
+        ? "Good Afternoon"
+        : "Good Evening";
+  const greeting = `${daytimeGreeting}, ${userName} 👋`;
 
   const [activeServices, latestSubscription, workspaceMemberCount, recentActivity] =
     await Promise.all([
@@ -58,142 +61,183 @@ export default async function CommandCenterPage() {
       getRecentWorkspaceActivity(supabase, workspaceId)
     ]);
 
+  const kpiItems = [
+    {
+      label: "Active Clients",
+      value: Math.max(workspaceMemberCount - 1, 0).toString()
+    },
+    { label: "Active Services", value: activeServices.length.toString() },
+    { label: "Monthly Activity", value: recentActivity.length.toString() },
+    {
+      label: "Subscription Status",
+      value: latestSubscription?.status?.toUpperCase() ?? "NOT SET"
+    }
+  ];
+
   return (
-    <AppShell>
-      <PageHeader
-        title="Business Command Center"
-        description={greeting}
-        actions={
-          <div className="inline-actions">
-            <StatusBadge label={workspace.name} />
-            <StatusBadge
-              label={user.email_confirmed_at ? "Email Verified" : "Verification Pending"}
-              tone={user.email_confirmed_at ? "success" : "warning"}
-            />
-          </div>
-        }
-      />
-
-      <SectionCard
-        title="Workspace Overview"
-        description="Your workspace setup and team snapshot."
-      >
-        <div className="metric-grid">
-          <div className="metric">
-            <p className="metric-label">Workspace</p>
-            <p className="metric-value">{workspace.name}</p>
-          </div>
-          <div className="metric">
-            <p className="metric-label">Status</p>
-            <p className="metric-value">{workspace.status}</p>
-          </div>
-          <div className="metric">
-            <p className="metric-label">Team Members</p>
-            <p className="metric-value">{workspaceMemberCount}</p>
-          </div>
-        </div>
-      </SectionCard>
-
-      <SectionCard
-        title="Services"
-        description="Active services assigned to this workspace."
-      >
-        {activeServices.length === 0 ? (
-          <EmptyState
-            title="No active services yet"
-            description="Add at least one service to begin delivery workflows."
-          />
-        ) : (
-          <ul className="simple-list">
-            {activeServices.map((service) => (
-              <li key={service.id}>{service.catalog_service?.name ?? service.id}</li>
-            ))}
-          </ul>
-        )}
-      </SectionCard>
-
-      <SectionCard
-        title="Subscription"
-        description="Current plan and billing lifecycle status."
-        id="subscription"
-      >
-        {latestSubscription ? (
-          <div className="metric-grid">
-            <div className="metric">
-              <p className="metric-label">Plan</p>
-              <p className="metric-value">
-                {latestSubscription.subscription_plan?.name ?? "Custom"}
-              </p>
+    <DashboardShell userName={userName} workspaceName={workspace.name}>
+      <div className="dashboard-stack">
+        <PageHeader
+          eyebrow="Business Command Center"
+          title={greeting}
+          subtitle="Welcome back to VukaSync."
+          actions={
+            <div className="header-chip-row">
+              <Badge>{workspace.name}</Badge>
+              <Badge tone={user.email_confirmed_at ? "success" : "accent"}>
+                {user.email_confirmed_at ? "Email Verified" : "Verification Pending"}
+              </Badge>
             </div>
-            <div className="metric">
-              <p className="metric-label">Status</p>
-              <p className="metric-value">{latestSubscription.status}</p>
-            </div>
-          </div>
-        ) : (
-          <EmptyState
-            title="No subscription found"
-            description="Subscription details will appear after plan assignment."
-          />
-        )}
-      </SectionCard>
-
-      <SectionCard title="Activity Feed" description="Recent workspace activity summary.">
-        {recentActivity.length === 0 ? (
-          <EmptyState
-            title="No recent activity"
-            description="Activity events will appear here once actions are performed."
-          />
-        ) : (
-          <ul className="activity-list">
-            {recentActivity.map((activity) => (
-              <li key={activity.id}>
-                <p className="activity-title">{activity.action.replaceAll("_", " ")}</p>
-                <p className="activity-meta">
-                  {activity.entity_type} ·{" "}
-                  {new Date(activity.created_at).toLocaleString("en-US")}
-                </p>
-              </li>
-            ))}
-          </ul>
-        )}
-      </SectionCard>
-
-      <SectionCard title="Quick Actions" description="Common workspace operations.">
-        <div className="quick-actions-grid">
-          <Link
-            className="quick-action-link"
-            href={`/service-selection?workspace=${workspaceId}&mode=manage`}
-          >
-            Add Service
-          </Link>
-          <Link className="quick-action-link" href="/team/invite">
-            Invite Team Member
-          </Link>
-          <Link className="quick-action-link" href="/command-center#subscription">
-            View Subscription
-          </Link>
-          <Link className="quick-action-link" href="/command-center#chatbot">
-            Open Chatbot
-          </Link>
-        </div>
-        <form action="/auth/logout" method="post">
-          <button className="button secondary" type="submit">
-            Logout
-          </button>
-        </form>
-      </SectionCard>
-
-      <SectionCard
-        id="chatbot"
-        title="Chatbot"
-        description="AI assistant entrypoint placeholder."
-      >
-        <EmptyState
-          title="Chatbot will be available soon"
-          description="Use this section for guided Q&A and operational support in a future phase."
+          }
         />
-      </SectionCard>
-    </AppShell>
+
+        <section>
+          <SectionHeader
+            title="KPI Overview"
+            description="High-level business health snapshots for your workspace."
+          />
+          <div className="kpi-grid">
+            {kpiItems.map((item) => (
+              <Card className="kpi-card" key={item.label}>
+                <p className="kpi-label">{item.label}</p>
+                <p className="kpi-value">{item.value}</p>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <div className="dashboard-two-column">
+          <Card className="section-card-modern">
+            <SectionHeader
+              title="Workspace Overview"
+              description="Workspace profile and engagement summary."
+            />
+            <div className="overview-list">
+              <div>
+                <span>Workspace Name</span>
+                <strong>{workspace.name}</strong>
+              </div>
+              <div>
+                <span>Member Count</span>
+                <strong>{workspaceMemberCount}</strong>
+              </div>
+              <div>
+                <span>Service Count</span>
+                <strong>{activeServices.length}</strong>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="section-card-modern">
+            <SectionHeader
+              title="Services"
+              description="Currently active services powering delivery."
+            />
+            {activeServices.length === 0 ? (
+              <EmptyState
+                description="No services selected yet."
+                title="Services coming soon"
+              />
+            ) : (
+              <ul className="service-pill-list">
+                {activeServices.map((service) => (
+                  <li key={service.id}>{service.catalog_service?.name ?? service.id}</li>
+                ))}
+              </ul>
+            )}
+          </Card>
+        </div>
+
+        <div className="dashboard-two-column">
+          <Card className="section-card-modern" id="subscription">
+            <SectionHeader
+              title="Subscription"
+              description="Current billing plan and lifecycle state."
+            />
+            {latestSubscription ? (
+              <div className="overview-list">
+                <div>
+                  <span>Plan</span>
+                  <strong>{latestSubscription.subscription_plan?.name ?? "Custom"}</strong>
+                </div>
+                <div>
+                  <span>Status</span>
+                  <strong>{latestSubscription.status}</strong>
+                </div>
+              </div>
+            ) : (
+              <EmptyState
+                title="No active subscription"
+                description="Subscription details will appear after plan assignment."
+              />
+            )}
+          </Card>
+
+          <Card className="section-card-modern">
+            <SectionHeader
+              title="Quick Actions"
+              description="Common operations you can perform instantly."
+            />
+            <div className="quick-actions-modern">
+              <Button href="/command-center#clients" variant="secondary">
+                Add Client
+              </Button>
+              <Button
+                href={`/service-selection?workspace=${workspaceId}&mode=manage`}
+                variant="secondary"
+              >
+                Add Service
+              </Button>
+              <Button href="/team/invite" variant="secondary">
+                Invite Team Member
+              </Button>
+              <Button href="/command-center#reports" variant="secondary">
+                View Reports
+              </Button>
+            </div>
+            <form action="/auth/logout" method="post">
+              <Button className="logout-inline" type="submit" variant="ghost">
+                Logout
+              </Button>
+            </form>
+          </Card>
+        </div>
+
+        <Card className="section-card-modern" id="activity">
+          <SectionHeader
+            title="Activity Feed"
+            description="Latest operational and service updates."
+          />
+          {recentActivity.length === 0 ? (
+            <EmptyState
+              title="No recent activity"
+              description="Activity updates will appear here as your workspace team operates."
+            />
+          ) : (
+            <ul className="activity-feed-modern">
+              {recentActivity.map((activity) => (
+                <li key={activity.id}>
+                  <p>{activity.action.replaceAll("_", " ")}</p>
+                  <span>
+                    {activity.entity_type} •{" "}
+                    {new Date(activity.created_at).toLocaleString("en-US")}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+
+        <Card className="section-card-modern" id="chatbot">
+          <SectionHeader title="Chatbot" description="AI support assistant preview." />
+          <EmptyState
+            title="Chatbot module in progress"
+            description="Your assistant workspace will appear here in a future phase."
+          />
+        </Card>
+        <section aria-hidden id="reports" />
+        <section aria-hidden id="clients" />
+      </div>
+    </DashboardShell>
   );
 }

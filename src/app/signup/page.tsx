@@ -1,4 +1,8 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
 import { redirectIfAuthenticated } from "../../lib/auth/guards";
 import { signUpWithPassword } from "./actions";
 
@@ -14,30 +18,32 @@ export default async function SignupPage({ searchParams }: SignupPageProps) {
   const error = params?.error;
 
   return (
-    <main>
-      <h1>Create your account</h1>
-      <p>Email verification is required before workspace creation.</p>
+    <main className="auth-page">
+      <div className="auth-page-inner">
+        <PageHeader
+          title="Create your account"
+          subtitle="Email verification is required before workspace creation."
+        />
 
-      <div className="card">
-        <form action={signUpWithPassword}>
-          <label>
-            Email
-            <input name="email" type="email" required />
-          </label>
-          <label>
-            Password
-            <input name="password" type="password" minLength={8} required />
-          </label>
-          <button className="button" type="submit">
-            Sign up
-          </button>
-        </form>
-        {error ? <p className="error">{error}</p> : null}
+        <Card className="auth-card">
+          <form action={signUpWithPassword}>
+            <label>
+              Email
+              <Input name="email" type="email" required />
+            </label>
+            <label>
+              Password
+              <Input name="password" type="password" minLength={8} required />
+            </label>
+            <Button type="submit">Sign up</Button>
+          </form>
+          {error ? <p className="error">{error}</p> : null}
+        </Card>
+
+        <p className="auth-footer">
+          Already have an account? <Link href="/login">Login</Link>.
+        </p>
       </div>
-
-      <p>
-        Already have an account? <Link href="/login">Login</Link>.
-      </p>
     </main>
   );
 }

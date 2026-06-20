@@ -1,6 +1,10 @@
 import { redirect } from "next/navigation";
-import { AppShell, PageHeader, SectionCard } from "@/components/app-shell";
-import { StatusBadge } from "@/components/status-badge";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
+import { SectionHeader } from "@/components/ui/section-header";
 import { requireAuthenticatedUser } from "../../lib/auth/guards";
 import {
   getWorkspaceRouteContext,
@@ -102,46 +106,47 @@ export default async function ServiceSelectionPage({
   const orderedServices = sortPhase4ServicesByOrder(availableServices ?? []);
 
   return (
-    <AppShell>
-      <PageHeader
-        title="Service Selection"
-        description="Choose the services you want active in your workspace."
-        actions={<StatusBadge label={workspace.name} />}
-      />
+    <main className="app-page">
+      <div className="app-page-inner">
+        <PageHeader
+          title="Service Selection"
+          subtitle="Choose the services you want active in your workspace."
+          actions={<Badge>{workspace.name}</Badge>}
+        />
 
-      {params?.error ? <p className="error">{params.error}</p> : null}
+        {params?.error ? <p className="error">{params.error}</p> : null}
 
-      <SectionCard
-        title="Available Services"
-        description="You can select one or multiple services. You can update this later."
-      >
-        <form action={saveSelectedServices}>
-          <input type="hidden" name="workspaceId" value={workspace.id} />
-          {orderedServices.length === 0 ? (
-            <p>No services are currently configured in the catalog.</p>
-          ) : (
-            <div className="selection-grid">
-              {orderedServices.map((service) => (
-                <label className="selection-card" key={service.id}>
-                  <div className="selection-card-header">
-                    <input
-                      type="checkbox"
-                      defaultChecked={selectedServiceIds.has(service.id)}
-                      name="serviceIds"
-                      value={service.id}
-                    />
-                    <span>{service.name}</span>
-                  </div>
-                  <p>{service.description ?? "Service module for your workspace."}</p>
-                </label>
-              ))}
-            </div>
-          )}
-          <button className="button" type="submit">
-            Save Services
-          </button>
-        </form>
-      </SectionCard>
-    </AppShell>
+        <Card className="section-card-modern">
+          <SectionHeader
+            title="Available Services"
+            description="You can select one or multiple services and update this later."
+          />
+          <form action={saveSelectedServices}>
+            <Input name="workspaceId" type="hidden" value={workspace.id} />
+            {orderedServices.length === 0 ? (
+              <p>No services are currently configured in the catalog.</p>
+            ) : (
+              <div className="selection-grid-modern">
+                {orderedServices.map((service) => (
+                  <label className="selection-card-modern" key={service.id}>
+                    <div className="selection-card-modern-header">
+                      <input
+                        defaultChecked={selectedServiceIds.has(service.id)}
+                        name="serviceIds"
+                        type="checkbox"
+                        value={service.id}
+                      />
+                      <span>{service.name}</span>
+                    </div>
+                    <p>{service.description ?? "Service module for your workspace."}</p>
+                  </label>
+                ))}
+              </div>
+            )}
+            <Button type="submit">Save Services</Button>
+          </form>
+        </Card>
+      </div>
+    </main>
   );
 }
