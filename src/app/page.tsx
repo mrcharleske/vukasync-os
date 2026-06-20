@@ -1,6 +1,22 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createSupabaseServerClient } from "../lib/supabase/server";
+import {
+  getWorkspaceRouteContext,
+  resolveWorkspaceRoute
+} from "../lib/workspaces/context";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    const context = await getWorkspaceRouteContext(supabase, user.id);
+    redirect(resolveWorkspaceRoute(context));
+  }
+
   return (
     <main>
       <h1>VukaSync OS</h1>

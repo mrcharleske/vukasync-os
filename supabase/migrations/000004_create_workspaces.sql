@@ -44,7 +44,7 @@ create table if not exists public.workspace_invitations (
   workspace_id uuid not null references public.workspaces (id) on delete cascade,
   email text not null,
   role public.workspace_membership_role not null default 'MEMBER',
-  token text not null unique default encode(gen_random_bytes(16), 'hex'),
+  token text not null unique default encode(extensions.gen_random_bytes(16), 'hex'),
   status public.invitation_status not null default 'PENDING',
   invited_by uuid references public.profiles (id) on delete set null,
   accepted_by uuid references public.profiles (id) on delete set null,

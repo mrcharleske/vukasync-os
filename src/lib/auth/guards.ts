@@ -1,5 +1,9 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "../supabase/server";
+import {
+  getWorkspaceRouteContext,
+  resolveWorkspaceRoute
+} from "../workspaces/context";
 
 export async function requireAuthenticatedUser() {
   const supabase = await createSupabaseServerClient();
@@ -21,6 +25,7 @@ export async function redirectIfAuthenticated() {
   } = await supabase.auth.getUser();
 
   if (user) {
-    redirect("/onboarding");
+    const context = await getWorkspaceRouteContext(supabase, user.id);
+    redirect(resolveWorkspaceRoute(context));
   }
 }

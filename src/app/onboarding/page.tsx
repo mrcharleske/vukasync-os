@@ -1,54 +1,73 @@
 import { redirect } from "next/navigation";
+import { AppShell, PageHeader, SectionCard } from "@/components/app-shell";
 import { requireAuthenticatedUser } from "../../lib/auth/guards";
-import { getFirstWorkspaceMembership } from "../../lib/workspaces/service";
+import {
+  getWorkspaceRouteContext,
+  resolveWorkspaceRoute
+} from "../../lib/workspaces/context";
 import { acceptInvitation, createWorkspace } from "./actions";
 
 type OnboardingProps = {
   searchParams: Promise<{
     error?: string;
+    token?: string;
   }>;
 };
 
 export default async function OnboardingPage({ searchParams }: OnboardingProps) {
   const { supabase, user } = await requireAuthenticatedUser();
-  const membership = await getFirstWorkspaceMembership(supabase, user.id);
+  const context = await getWorkspaceRouteContext(supabase, user.id);
   const params = await searchParams;
 
-  if (membership) {
-    redirect(`/command-center?workspace=${membership.workspace_id}`);
+  if (context.workspaceId) {
+    redirect(resolveWorkspaceRoute(context));
   }
 
   return (
-    <main>
-      <h1>Workspace onboarding</h1>
-      <p>Create your first workspace or accept an invitation.</p>
+    <AppShell>
+      <PageHeader
+        title="Workspace Onboarding"
+        description="Create your first workspace or accept an invitation to join an existing one."
+      />
+
       {params?.error ? <p className="error">{params.error}</p> : null}
 
-      <div className="card">
-        <h2>Create Workspace</h2>
-        <form action={createWorkspace}>
-          <label>
-            Workspace name
-            <input name="workspaceName" placeholder="Acme Holdings" required />
-          </label>
-          <button className="button" type="submit">
-            Create Workspace
-          </button>
-        </form>
-      </div>
+      <div className="grid-two">
+        <SectionCard
+          title="Create Workspace"
+          description="Start your VukaSync operating space and continue setup."
+        >
+          <form action={createWorkspace}>
+            <label>
+              Workspace name
+              <input name="workspaceName" placeholder="Acme Holdings" required />
+            </label>
+            <button className="button" type="submit">
+              Create Workspace
+            </button>
+          </form>
+        </SectionCard>
 
-      <div className="card">
-        <h2>Accept Invitation</h2>
-        <form action={acceptInvitation}>
-          <label>
-            Invitation token
-            <input name="invitationToken" placeholder="Paste token" required />
-          </label>
-          <button className="button secondary" type="submit">
-            Accept Invitation
-          </button>
-        </form>
+        <SectionCard
+          title="Accept Invitation"
+          description="Use your invitation token to join an existing workspace."
+        >
+          <form action={acceptInvitation}>
+            <label>
+              Invitation token
+              <input
+                defaultValue={params?.token}
+                name="invitationToken"
+                placeholder="Paste token"
+                required
+              />
+            </label>
+            <button className="button secondary" type="submit">
+              Accept Invitation
+            </button>
+          </form>
+        </SectionCard>
       </div>
-    </main>
+    </AppShell>
   );
 }
