@@ -37,29 +37,32 @@ function getButtonClassName(
   );
 }
 
-export function Button({
-  children,
-  className,
-  size = "md",
-  variant = "primary",
-  ...rest
-}: ButtonProps) {
-  if ("href" in rest && rest.href) {
+export function Button(props: ButtonProps) {
+  const {
+    children,
+    className,
+    size = "md",
+    variant = "primary"
+  } = props;
+
+  if ("href" in props && props.href) {
     return (
       <Link
         className={getButtonClassName(variant, size, className)}
-        href={rest.href}
+        href={props.href}
       >
         {children}
       </Link>
     );
   }
 
+  const { type, ...buttonProps } = props as ButtonAsButton;
+
   return (
     <button
       className={getButtonClassName(variant, size, className)}
-      type={rest.type ?? "button"}
-      {...rest}
+      type={type ?? "button"}
+      {...buttonProps}
     >
       {children}
     </button>

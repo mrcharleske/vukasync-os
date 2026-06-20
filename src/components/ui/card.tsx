@@ -1,11 +1,14 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 type CardProps = {
   children: ReactNode;
-  className?: string;
-};
+} & HTMLAttributes<HTMLElement>;
 
-export function Card({ children, className }: CardProps) {
-  return <section className={cn("ui-card", className)}>{children}</section>;
+export function Card({ children, className, ...rest }: CardProps) {
+  return (
+    <section className={cn("ui-card", className)} {...rest}>
+      {children}
+    </section>
+  );
 }
