@@ -1,10 +1,15 @@
 import { redirect } from "next/navigation";
-import { AppShell, PageHeader, SectionCard } from "@/components/app-shell";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { Card } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHeader } from "@/components/ui/page-header";
+import { SectionHeader } from "@/components/ui/section-header";
 import { requireAuthenticatedUser } from "../../../lib/auth/guards";
 import {
   getWorkspaceRouteContext,
   resolveWorkspaceRoute
 } from "../../../lib/workspaces/context";
+import { getWorkspaceById } from "../../../lib/workspaces/service";
 
 export default async function InviteTeamMemberPage() {
   const { supabase, user } = await requireAuthenticatedUser();
@@ -18,22 +23,30 @@ export default async function InviteTeamMemberPage() {
     redirect(resolveWorkspaceRoute(context));
   }
 
-  return (
-    <AppShell>
-      <PageHeader
-        title="Invite Team Member"
-        description="Invitation creation UI will be enabled in the next phase."
-      />
+  const workspace = await getWorkspaceById(supabase, context.workspaceId);
 
-      <SectionCard
-        title="Invitation Foundation"
-        description="Workspace invitation acceptance is active. Invitation sending UI is next."
-      >
-        <p>
-          Use this area to invite team members in the next iteration. Current phase
-          includes invitation acceptance flow and membership assignment.
-        </p>
-      </SectionCard>
-    </AppShell>
+  return (
+    <DashboardShell
+      userName={user.email ?? "User"}
+      workspaceName={workspace?.name ?? "Workspace"}
+    >
+      <div className="dashboard-stack">
+        <PageHeader
+          eyebrow="Team"
+          title="Invite Team Member"
+          subtitle="Invitation creation UI will be enabled in the next phase."
+        />
+        <Card className="section-card-modern">
+          <SectionHeader
+            title="Invitation Foundation"
+            description="Invitation acceptance is active. Sending UI follows next."
+          />
+          <EmptyState
+            title="Invitation sending UI coming soon"
+            description="This module is intentionally scoped out for this phase and will be enabled next."
+          />
+        </Card>
+      </div>
+    </DashboardShell>
   );
 }

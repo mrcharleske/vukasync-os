@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
 import { createSupabaseServerClient } from "../lib/supabase/server";
 import {
   getWorkspaceRouteContext,
@@ -18,24 +21,27 @@ export default async function LandingPage() {
   }
 
   return (
-    <main>
-      <h1>VukaSync OS</h1>
-      <p>
-        A workspace-based client portal and business services platform for global
-        teams.
-      </p>
+    <main className="auth-page">
+      <div className="auth-page-inner">
+        <PageHeader
+          eyebrow="VukaSync OS"
+          title="Run your workspace from one command center"
+          subtitle="A workspace-based client portal and business services platform for global teams."
+        />
 
-      <div className="card">
-        <h2>Get started</h2>
-        <p>Authenticate first, then create or join your workspace.</p>
-        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-          <Link href="/signup" className="button">
-            Sign up
-          </Link>
-          <Link href="/login" className="button secondary">
-            Login
-          </Link>
-        </div>
+        <Card className="auth-card">
+          <h2>Get started</h2>
+          <p>Authenticate first, then create or join your workspace.</p>
+          <div className="landing-actions">
+            <Button href="/signup">Sign up</Button>
+            <Button href="/login" variant="secondary">
+              Login
+            </Button>
+          </div>
+        </Card>
+        <p className="auth-footer">
+          Returning member? <Link href="/login">Continue to login</Link>.
+        </p>
       </div>
     </main>
   );

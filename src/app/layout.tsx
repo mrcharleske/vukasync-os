@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "VukaSync OS",
-  description: "VukaSync localhost foundation for Phase 3D."
+  description: "VukaSync premium workspace command center."
 };
 
 export default function RootLayout({

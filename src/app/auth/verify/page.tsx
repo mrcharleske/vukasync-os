@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
 
 type VerifyPageProps = {
   searchParams: Promise<{
@@ -11,17 +13,22 @@ export default async function VerifyEmailPage({ searchParams }: VerifyPageProps)
   const email = params?.email;
 
   return (
-    <main>
-      <h1>Verify your email</h1>
-      <div className="card">
-        <p>
-          We sent a verification link to <strong>{email ?? "your email"}</strong>.
+    <main className="auth-page">
+      <div className="auth-page-inner">
+        <PageHeader
+          title="Verify your email"
+          subtitle="Confirm your inbox first, then continue onboarding."
+        />
+        <Card className="auth-card">
+          <p>
+            We sent a verification link to <strong>{email ?? "your email"}</strong>.
+          </p>
+          <p>After verification, login to continue your workspace setup.</p>
+        </Card>
+        <p className="auth-footer">
+          Already verified? <Link href="/login">Go to login</Link>.
         </p>
-        <p>Verify your email first, then login to continue onboarding.</p>
       </div>
-      <p>
-        Already verified? <Link href="/login">Go to login</Link>.
-      </p>
     </main>
   );
 }

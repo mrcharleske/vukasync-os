@@ -1,5 +1,9 @@
 import { redirect } from "next/navigation";
-import { AppShell, PageHeader, SectionCard } from "@/components/app-shell";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
+import { SectionHeader } from "@/components/ui/section-header";
 import { requireAuthenticatedUser } from "../../lib/auth/guards";
 import {
   getWorkspaceRouteContext,
@@ -24,50 +28,52 @@ export default async function OnboardingPage({ searchParams }: OnboardingProps) 
   }
 
   return (
-    <AppShell>
-      <PageHeader
-        title="Workspace Onboarding"
-        description="Create your first workspace or accept an invitation to join an existing one."
-      />
+    <main className="app-page">
+      <div className="app-page-inner">
+        <PageHeader
+          title="Workspace onboarding"
+          subtitle="Create your first workspace or accept an invitation to join one."
+        />
 
-      {params?.error ? <p className="error">{params.error}</p> : null}
+        {params?.error ? <p className="error">{params.error}</p> : null}
 
-      <div className="grid-two">
-        <SectionCard
-          title="Create Workspace"
-          description="Start your VukaSync operating space and continue setup."
-        >
-          <form action={createWorkspace}>
-            <label>
-              Workspace name
-              <input name="workspaceName" placeholder="Acme Holdings" required />
-            </label>
-            <button className="button" type="submit">
-              Create Workspace
-            </button>
-          </form>
-        </SectionCard>
+        <div className="responsive-two-column">
+          <Card className="section-card-modern">
+            <SectionHeader
+              title="Create Workspace"
+              description="Start your VukaSync operating space and continue setup."
+            />
+            <form action={createWorkspace}>
+              <label>
+                Workspace name
+                <Input name="workspaceName" placeholder="Acme Holdings" required />
+              </label>
+              <Button type="submit">Create Workspace</Button>
+            </form>
+          </Card>
 
-        <SectionCard
-          title="Accept Invitation"
-          description="Use your invitation token to join an existing workspace."
-        >
-          <form action={acceptInvitation}>
-            <label>
-              Invitation token
-              <input
-                defaultValue={params?.token}
-                name="invitationToken"
-                placeholder="Paste token"
-                required
-              />
-            </label>
-            <button className="button secondary" type="submit">
-              Accept Invitation
-            </button>
-          </form>
-        </SectionCard>
+          <Card className="section-card-modern">
+            <SectionHeader
+              title="Accept Invitation"
+              description="Use your invitation token to join an existing workspace."
+            />
+            <form action={acceptInvitation}>
+              <label>
+                Invitation token
+                <Input
+                  defaultValue={params?.token}
+                  name="invitationToken"
+                  placeholder="Paste token"
+                  required
+                />
+              </label>
+              <Button type="submit" variant="secondary">
+                Accept Invitation
+              </Button>
+            </form>
+          </Card>
+        </div>
       </div>
-    </AppShell>
+    </main>
   );
 }
