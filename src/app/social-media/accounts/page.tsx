@@ -35,6 +35,20 @@ function getUserName(fullName: string | null, email: string | undefined) {
   return fullName ?? email ?? "User";
 }
 
+function getAccountClientName(account: unknown) {
+  const clients = (account as { clients?: unknown }).clients;
+  if (Array.isArray(clients)) {
+    const first = clients[0] as { business_name?: string } | undefined;
+    return first?.business_name ?? "-";
+  }
+
+  if (clients && typeof clients === "object") {
+    return (clients as { business_name?: string }).business_name ?? "-";
+  }
+
+  return "-";
+}
+
 export default async function SocialAccountsPage({
   searchParams
 }: SocialAccountsPageProps) {
@@ -233,7 +247,7 @@ export default async function SocialAccountsPage({
                 <tbody>
                   {socialAccounts.map((account) => (
                     <tr key={account.id}>
-                      <td>{account.clients?.business_name ?? "-"}</td>
+                      <td>{getAccountClientName(account)}</td>
                       <td>{account.platform}</td>
                       <td>{account.username}</td>
                       <td>{account.connection_type}</td>
