@@ -23,6 +23,9 @@ Run in order via `supabase db push` (CLI applies by filename order):
 9. `000009_enable_rls_policies.sql`
 10. `000010_allow_invitation_acceptance_audit.sql`
 11. `000011_seed_phase4_services.sql`
+12. `000012_relax_workspace_insert_policy.sql`
+13. `000013_create_clients_and_social_accounts.sql`
+14. `000014_enable_clients_social_accounts_rls.sql`
 
 ## 3) Verify migrations and tables
 

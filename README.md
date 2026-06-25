@@ -40,6 +40,8 @@ Protected:
 - `/onboarding`
 - `/service-selection`
 - `/command-center`
+- `/clients`
+- `/social-media/accounts`
 - `/team/invite`
 
 Auth utilities:
@@ -70,6 +72,9 @@ Migrations are defined in:
 - `supabase/migrations/000009_enable_rls_policies.sql`
 - `supabase/migrations/000010_allow_invitation_acceptance_audit.sql`
 - `supabase/migrations/000011_seed_phase4_services.sql`
+- `supabase/migrations/000012_relax_workspace_insert_policy.sql`
+- `supabase/migrations/000013_create_clients_and_social_accounts.sql`
+- `supabase/migrations/000014_enable_clients_social_accounts_rls.sql`
 
 Operational docs:
 

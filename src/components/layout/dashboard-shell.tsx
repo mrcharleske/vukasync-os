@@ -13,8 +13,8 @@ type DashboardShellProps = {
 
 const NAV_ITEMS = [
   { label: "Business Command Center", href: "/command-center" },
-  { label: "Clients" },
-  { label: "Social Media" },
+  { label: "Clients", href: "/clients" },
+  { label: "Social Media", href: "/social-media/accounts" },
   { label: "Projects" },
   { label: "Reports" },
   { label: "Billing" },
@@ -55,7 +55,10 @@ export function DashboardShell({
         <nav>
           <ul className="dashboard-nav-list">
             {NAV_ITEMS.map((item) => {
-              const isActive = Boolean(item.href && pathname === item.href);
+              const isActive = Boolean(
+                item.href &&
+                  (pathname === item.href || pathname.startsWith(`${item.href}/`))
+              );
               return (
                 <li key={item.label}>
                   {item.href ? (

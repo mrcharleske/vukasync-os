@@ -10,6 +10,16 @@ export type WorkspaceMembershipRole = "OWNER" | "ADMIN" | "MEMBER";
 export type InvitationStatus = "PENDING" | "ACCEPTED" | "EXPIRED";
 export type WorkspaceStatus = "ACTIVE" | "PENDING" | "SUSPENDED";
 export type SubscriptionStatus = "TRIALING" | "ACTIVE" | "PAST_DUE" | "CANCELED";
+export type SocialPlatform =
+  | "INSTAGRAM"
+  | "FACEBOOK"
+  | "LINKEDIN"
+  | "X"
+  | "TIKTOK"
+  | "YOUTUBE";
+export type SocialConnectionType = "MANUAL" | "API_CONNECTED";
+export type SocialAccountStatus = "ACTIVE" | "INACTIVE";
+export type ClientAssignmentPermission = "VIEWER" | "EDITOR";
 
 export interface Database {
   public: {
@@ -44,6 +54,70 @@ export interface Database {
           entity_id?: string | null;
           metadata?: Json;
           created_at?: string;
+        };
+      };
+      client_assignments: {
+        Row: {
+          id: number;
+          client_id: string;
+          profile_id: string;
+          permission: ClientAssignmentPermission;
+          created_at: string;
+        };
+        Insert: {
+          id?: number;
+          client_id: string;
+          profile_id: string;
+          permission?: ClientAssignmentPermission;
+          created_at?: string;
+        };
+        Update: {
+          id?: number;
+          client_id?: string;
+          profile_id?: string;
+          permission?: ClientAssignmentPermission;
+          created_at?: string;
+        };
+      };
+      clients: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          client_name: string;
+          business_name: string;
+          contact_email: string | null;
+          phone: string | null;
+          country: string | null;
+          timezone: string | null;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          client_name: string;
+          business_name: string;
+          contact_email?: string | null;
+          phone?: string | null;
+          country?: string | null;
+          timezone?: string | null;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          workspace_id?: string;
+          client_name?: string;
+          business_name?: string;
+          contact_email?: string | null;
+          phone?: string | null;
+          country?: string | null;
+          timezone?: string | null;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
         };
       };
       platform_roles: {
@@ -137,6 +211,44 @@ export interface Database {
           workspace_id?: string;
           catalog_service_id?: string;
           status?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      social_accounts: {
+        Row: {
+          id: string;
+          client_id: string;
+          platform: SocialPlatform;
+          username: string;
+          profile_url: string | null;
+          connection_type: SocialConnectionType;
+          account_status: SocialAccountStatus;
+          metadata: Json;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          client_id: string;
+          platform: SocialPlatform;
+          username: string;
+          profile_url?: string | null;
+          connection_type?: SocialConnectionType;
+          account_status?: SocialAccountStatus;
+          metadata?: Json;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          client_id?: string;
+          platform?: SocialPlatform;
+          username?: string;
+          profile_url?: string | null;
+          connection_type?: SocialConnectionType;
+          account_status?: SocialAccountStatus;
+          metadata?: Json;
           created_at?: string;
           updated_at?: string;
         };
@@ -293,7 +405,11 @@ export interface Database {
     Views: Record<string, never>;
     Functions: Record<string, never>;
     Enums: {
+      client_assignment_permission: ClientAssignmentPermission;
       invitation_status: InvitationStatus;
+      social_account_status: SocialAccountStatus;
+      social_connection_type: SocialConnectionType;
+      social_platform: SocialPlatform;
       subscription_status: SubscriptionStatus;
       workspace_membership_role: WorkspaceMembershipRole;
       workspace_status: WorkspaceStatus;

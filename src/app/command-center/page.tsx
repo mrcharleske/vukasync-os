@@ -179,7 +179,7 @@ export default async function CommandCenterPage() {
               description="Common operations you can perform instantly."
             />
             <div className="quick-actions-modern">
-              <Button href="/command-center#clients" variant="secondary">
+              <Button href="/clients" variant="secondary">
                 Add Client
               </Button>
               <Button

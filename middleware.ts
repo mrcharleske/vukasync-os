@@ -10,6 +10,8 @@ export const config = {
     "/onboarding/:path*",
     "/service-selection/:path*",
     "/command-center/:path*",
+    "/clients/:path*",
+    "/social-media/:path*",
     "/team/invite/:path*"
   ]
 };

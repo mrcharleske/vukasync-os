@@ -56,6 +56,17 @@ label {
   font-size: 0.9rem;
 }
 
+.success {
+  color: #047857;
+  font-size: 0.9rem;
+}
+
+.muted-note {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 0;
+}
+
 .ui-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
@@ -299,6 +310,99 @@ label {
 .selection-card-modern p {
   color: var(--text-muted);
   margin-bottom: 0;
+}
+
+.form-grid-modern {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.form-row-two {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ui-textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.inline-form-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.data-table-wrapper {
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+.data-table {
+  border-collapse: collapse;
+  min-width: 760px;
+  width: 100%;
+}
+
+.data-table th,
+.data-table td {
+  border-bottom: 1px solid var(--border-primary);
+  padding: 0.72rem 0.82rem;
+  text-align: left;
+}
+
+.data-table th {
+  background: #f8fbff;
+  color: #334155;
+  font-size: 0.79rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.data-table tbody tr:hover {
+  background: rgba(51, 71, 213, 0.05);
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.data-table td {
+  color: #1e293b;
+  font-size: 0.9rem;
+}
+
+.filter-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.filter-chip {
+  border: 1px solid var(--border-primary);
+  border-radius: 999px;
+  color: #334155;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.38rem 0.68rem;
+  text-decoration: none;
+  transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+.filter-chip:hover {
+  background: #eef4ff;
+  border-color: #bac7eb;
+  transform: translateY(-1px);
+}
+
+.filter-chip-active {
+  background: rgba(51, 71, 213, 0.12);
+  border-color: rgba(51, 71, 213, 0.26);
+  color: #1f2f8a;
 }
 
 .dashboard-shell {
@@ -599,7 +703,8 @@ label {
   .dashboard-two-column,
   .quick-actions-modern,
   .selection-grid-modern,
-  .responsive-two-column {
+  .responsive-two-column,
+  .form-row-two {
     grid-template-columns: 1fr;
   }
 }
