@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VukaSync Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <div class="brand-mark">VS</div>
+          <div>
+            <p class="brand-kicker">VukaSync</p>
+            <h1>Enterprise OS</h1>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a class="nav-item active" href="#">
+            <span class="icon">⌘</span>
+            Business Command Center
+          </a>
+          <a class="nav-item" href="#">
+            <span class="icon">👥</span>
+            Clients
+          </a>
+          <a class="nav-item" href="#">
+            <span class="icon">📣</span>
+            Social Media
+          </a>
+          <a class="nav-item" href="#">
+            <span class="icon">📁</span>
+            Projects
+          </a>
+          <a class="nav-item" href="#">
+            <span class="icon">📊</span>
+            Reports
+          </a>
+          <a class="nav-item" href="#">
+            <span class="icon">💳</span>
+            Billing
+          </a>
+          <a class="nav-item" href="#">
+            <span class="icon">⚙</span>
+            Settings
+          </a>
+        </nav>
+
+        <div class="sidebar-upgrade">
+          <p class="eyebrow">Premium Workspace</p>
+          <h2>Scale with confidence</h2>
+          <p>Unified workflows, compliance controls, and live insights.</p>
+          <button>View roadmap</button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="top-navbar">
+          <div class="left-controls">
+            <button id="menuToggle" class="menu-toggle" aria-label="Open sidebar">
+              ☰
+            </button>
+            <div class="search-shell">
+              <span>⌕</span>
+              <input type="text" placeholder="Search clients, workflows, projects..." />
+            </div>
+          </div>
+          <div class="right-controls">
+            <button class="ghost-button">Status: Live</button>
+            <span class="badge neutral">Sync 99.9%</span>
+            <button class="icon-button" aria-label="Notifications">🔔</button>
+            <button class="avatar-chip">
+              <span>AM</span>
+              Alex M.
+            </button>
+          </div>
+        </header>
+
+        <section class="command-center">
+          <div class="command-header">
+            <div>
+              <p class="eyebrow">Business Command Center</p>
+              <h2>Operational Pulse</h2>
+              <p>Monitor campaign execution, client growth, and team throughput in one place.</p>
+            </div>
+            <div class="tab-group">
+              <button class="tab active">Today</button>
+              <button class="tab">Week</button>
+              <button class="tab">Month</button>
+            </div>
+          </div>
+
+          <div class="kpi-grid">
+            <article class="kpi-card">
+              <p>Revenue Attributed</p>
+              <h3>$128,400</h3>
+              <span class="badge success">+14.2%</span>
+            </article>
+            <article class="kpi-card">
+              <p>Active Clients</p>
+              <h3>63</h3>
+              <span class="badge info">+6 this month</span>
+            </article>
+            <article class="kpi-card">
+              <p>Automations Running</p>
+              <h3>247</h3>
+              <span class="badge neutral">4 paused</span>
+            </article>
+            <article class="kpi-card">
+              <p>SLA Compliance</p>
+              <h3>99.4%</h3>
+              <span class="badge success">On target</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="dashboard-grid">
+          <article class="panel workspace">
+            <div class="panel-heading">
+              <h3>Workspace Overview</h3>
+              <button class="text-link">Open full workspace</button>
+            </div>
+            <div class="workspace-cards">
+              <div class="workspace-item">
+                <p>Pipeline Health</p>
+                <h4>Strong</h4>
+                <small>12 campaigns shipping this week</small>
+              </div>
+              <div class="workspace-item">
+                <p>At-Risk Accounts</p>
+                <h4>3</h4>
+                <small>Need stakeholder follow-up</small>
+              </div>
+              <div class="workspace-item">
+                <p>Pending Approvals</p>
+                <h4>9</h4>
+                <small>Average turnaround 3.1 hrs</small>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel activity">
+            <div class="panel-heading">
+              <h3>Activity Feed</h3>
+              <button class="text-link">View all</button>
+            </div>
+            <ul>
+              <li>
+                <span class="dot"></span>
+                New campaign approved for Acme Financial
+                <time>2m ago</time>
+              </li>
+              <li>
+                <span class="dot"></span>
+                Client onboarding checklist completed
+                <time>18m ago</time>
+              </li>
+              <li>
+                <span class="dot"></span>
+                Weekly report exported to executive team
+                <time>43m ago</time>
+              </li>
+              <li>
+                <span class="dot"></span>
+                Billing sync completed with no exceptions
+                <time>1h ago</time>
+              </li>
+            </ul>
+          </article>
+
+          <article class="panel quick-actions">
+            <div class="panel-heading">
+              <h3>Quick Actions</h3>
+            </div>
+            <form>
+              <label>
+                Campaign Name
+                <input type="text" placeholder="Q3 Product Launch" />
+              </label>
+              <label>
+                Client
+                <select>
+                  <option>Acme Financial</option>
+                  <option>Northstar Health</option>
+                  <option>Vertex Retail</option>
+                </select>
+              </label>
+              <label>
+                Priority
+                <div class="button-group">
+                  <button type="button" class="pill active">High</button>
+                  <button type="button" class="pill">Medium</button>
+                  <button type="button" class="pill">Low</button>
+                </div>
+              </label>
+              <button type="submit" class="primary-button">Launch workflow</button>
+            </form>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
