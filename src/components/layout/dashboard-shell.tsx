@@ -3,6 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
+import type { LucideIcon } from "lucide-react";
+import {
+  BarChart3,
+  BriefcaseBusiness,
+  CreditCard,
+  FolderKanban,
+  LayoutDashboard,
+  Menu,
+  Settings,
+  Users
+} from "lucide-react";
 import { cn } from "@/lib/cn";
 
 type DashboardShellProps = {
@@ -12,13 +23,13 @@ type DashboardShellProps = {
 };
 
 const NAV_ITEMS = [
-  { label: "Business Command Center", href: "/command-center" },
-  { label: "Clients", href: "/clients" },
-  { label: "Social Media", href: "/social-media/accounts" },
-  { label: "Projects" },
-  { label: "Reports" },
-  { label: "Billing" },
-  { label: "Settings" }
+  { label: "Command Center", href: "/command-center", icon: LayoutDashboard },
+  { label: "Clients", href: "/clients", icon: Users },
+  { label: "Social Media", href: "/social-media/accounts", icon: BriefcaseBusiness },
+  { label: "Projects", icon: FolderKanban },
+  { label: "Reports", icon: BarChart3 },
+  { label: "Billing", icon: CreditCard },
+  { label: "Settings", icon: Settings }
 ];
 
 export function DashboardShell({
@@ -38,6 +49,7 @@ export function DashboardShell({
     >
       <button
         aria-expanded={mobileMenuOpen}
+        aria-label="Close navigation menu"
         className="dashboard-overlay"
         onClick={() => setMobileMenuOpen(false)}
         type="button"
@@ -49,12 +61,16 @@ export function DashboardShell({
         )}
       >
         <div className="dashboard-brand">
-          <p className="dashboard-brand-eyebrow">VukaSync OS</p>
-          <p className="dashboard-brand-title">Workspace Console</p>
+          <div className="dashboard-brand-mark">VS</div>
+          <div>
+            <p className="dashboard-brand-eyebrow">VukaSync OS</p>
+            <p className="dashboard-brand-title">Business Command Layer</p>
+          </div>
         </div>
         <nav>
           <ul className="dashboard-nav-list">
             {NAV_ITEMS.map((item) => {
+              const Icon = item.icon as LucideIcon;
               const isActive = Boolean(
                 item.href &&
                   (pathname === item.href || pathname.startsWith(`${item.href}/`))
@@ -70,11 +86,17 @@ export function DashboardShell({
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      {item.label}
+                      <Icon aria-hidden="true" size={17} />
+                      <span>{item.label}</span>
                     </Link>
                   ) : (
-                    <span className="dashboard-nav-item dashboard-nav-item-disabled">
-                      {item.label}
+                    <span
+                      aria-disabled="true"
+                      className="dashboard-nav-item dashboard-nav-item-disabled"
+                    >
+                      <Icon aria-hidden="true" size={17} />
+                      <span>{item.label}</span>
+                      <small>Soon</small>
                     </span>
                   )}
                 </li>
@@ -82,6 +104,10 @@ export function DashboardShell({
             })}
           </ul>
         </nav>
+        <div className="dashboard-sidebar-footer">
+          <p>Premium Workspace</p>
+          <strong>Operational confidence: High</strong>
+        </div>
       </aside>
 
       <div className="dashboard-main">
@@ -92,8 +118,16 @@ export function DashboardShell({
             onClick={() => setMobileMenuOpen((value) => !value)}
             type="button"
           >
+            <Menu size={16} />
             Menu
           </button>
+          <div className="dashboard-topbar-search">
+            <input
+              aria-label="Search workspace"
+              placeholder="Search clients, projects, or activity..."
+              type="search"
+            />
+          </div>
           <div className="dashboard-topbar-meta">
             <p>{workspaceName ?? "Workspace"}</p>
             <p>{userName ?? "User"}</p>

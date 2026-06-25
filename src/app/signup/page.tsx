@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -18,8 +19,27 @@ export default async function SignupPage({ searchParams }: SignupPageProps) {
   const error = params?.error;
 
   return (
-    <main className="auth-page">
-      <div className="auth-page-inner">
+    <main className="auth-shell">
+      <section className="auth-shell-panel">
+        <p className="auth-shell-kicker">VukaSync OS</p>
+        <h1>Launch a premium workspace in minutes.</h1>
+        <p>
+          Start with secure identity, then configure clients, services, and social operations in
+          one integrated experience.
+        </p>
+        <ul>
+          <li>
+            <Sparkles size={16} />
+            Fast onboarding with elegant workflows
+          </li>
+          <li>
+            <ShieldCheck size={16} />
+            Workspace-first access controls
+          </li>
+        </ul>
+      </section>
+
+      <section className="auth-shell-form">
         <PageHeader
           title="Create your account"
           subtitle="Email verification is required before workspace creation."
@@ -43,7 +63,7 @@ export default async function SignupPage({ searchParams }: SignupPageProps) {
         <p className="auth-footer">
           Already have an account? <Link href="/login">Login</Link>.
         </p>
-      </div>
+      </section>
     </main>
   );
 }

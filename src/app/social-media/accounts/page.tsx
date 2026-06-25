@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { BadgeCheck, Filter, Globe2, Link2 } from "lucide-react";
 import { createSocialAccount } from "./actions";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Badge } from "@/components/ui/badge";
@@ -89,17 +90,33 @@ export default async function SocialAccountsPage({
   return (
     <DashboardShell userName={userName} workspaceName={workspace.name}>
       <div className="dashboard-stack">
-        <PageHeader
-          eyebrow="Social Media"
-          title="Social Accounts"
-          subtitle="Track and manage each client's connected social channels."
-          actions={
-            <div className="header-chip-row">
-              <Badge>{workspace.name}</Badge>
-              {selectedPlatform ? <Badge tone="accent">{selectedPlatform}</Badge> : null}
+        <Card className="command-hero-card">
+          <PageHeader
+            eyebrow="Social Media"
+            title="Social Accounts"
+            subtitle="Track and manage each client's connected social channels."
+            actions={
+              <div className="header-chip-row">
+                <Badge>{workspace.name}</Badge>
+                {selectedPlatform ? <Badge tone="accent">{selectedPlatform}</Badge> : null}
+              </div>
+            }
+          />
+          <div className="command-hero-metrics">
+            <div>
+              <Globe2 size={16} />
+              <span>{socialAccounts.length} connected accounts</span>
             </div>
-          }
-        />
+            <div>
+              <Filter size={16} />
+              <span>Live platform filtering</span>
+            </div>
+            <div>
+              <Link2 size={16} />
+              <span>Unified client-to-account mapping</span>
+            </div>
+          </div>
+        </Card>
 
         {params?.error ? <p className="error">{params.error}</p> : null}
         {params?.success ? <p className="success">{params.success}</p> : null}
@@ -246,14 +263,25 @@ export default async function SocialAccountsPage({
                   {socialAccounts.map((account) => (
                     <tr key={account.id}>
                       <td>{getAccountClientName(account)}</td>
-                      <td>{account.platform}</td>
+                      <td>
+                        <Badge tone="accent">{account.platform}</Badge>
+                      </td>
                       <td>{account.username}</td>
-                      <td>{account.connection_type}</td>
-                      <td>{account.account_status}</td>
+                      <td>
+                        <Badge>{account.connection_type}</Badge>
+                      </td>
+                      <td>
+                        <Badge tone={account.account_status === "ACTIVE" ? "success" : "neutral"}>
+                          {account.account_status}
+                        </Badge>
+                      </td>
                       <td>
                         {account.profile_url ? (
                           <a href={account.profile_url} rel="noreferrer" target="_blank">
-                            Open
+                            <span className="table-link-with-icon">
+                              <BadgeCheck size={14} />
+                              Open
+                            </span>
                           </a>
                         ) : (
                           "-"

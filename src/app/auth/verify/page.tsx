@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MailCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
 
@@ -13,8 +14,20 @@ export default async function VerifyEmailPage({ searchParams }: VerifyPageProps)
   const email = params?.email;
 
   return (
-    <main className="auth-page">
-      <div className="auth-page-inner">
+    <main className="auth-shell">
+      <section className="auth-shell-panel">
+        <p className="auth-shell-kicker">Verification Required</p>
+        <h1>One final step before entering your workspace.</h1>
+        <p>Confirm your email to unlock secure onboarding and workspace creation.</p>
+        <ul>
+          <li>
+            <MailCheck size={16} />
+            Verification keeps your workspace protected
+          </li>
+        </ul>
+      </section>
+
+      <section className="auth-shell-form">
         <PageHeader
           title="Verify your email"
           subtitle="Confirm your inbox first, then continue onboarding."
@@ -28,7 +41,7 @@ export default async function VerifyEmailPage({ searchParams }: VerifyPageProps)
         <p className="auth-footer">
           Already verified? <Link href="/login">Go to login</Link>.
         </p>
-      </div>
+      </section>
     </main>
   );
 }

@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { Building2, PencilLine, UserRoundPlus } from "lucide-react";
 import { createClient, updateClient } from "./actions";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Badge } from "@/components/ui/badge";
@@ -62,17 +63,33 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
   return (
     <DashboardShell userName={userName} workspaceName={workspace.name}>
       <div className="dashboard-stack">
-        <PageHeader
-          eyebrow="Clients"
-          title="Client Management"
-          subtitle="Create, organize, and maintain client records for your workspace."
-          actions={
-            <div className="header-chip-row">
-              <Badge>{workspace.name}</Badge>
-              <Badge tone="accent">{membership.role}</Badge>
+        <Card className="command-hero-card">
+          <PageHeader
+            eyebrow="Clients"
+            title="Client Management"
+            subtitle="Create, organize, and maintain client records for your workspace."
+            actions={
+              <div className="header-chip-row">
+                <Badge>{workspace.name}</Badge>
+                <Badge tone="accent">{membership.role}</Badge>
+              </div>
+            }
+          />
+          <div className="command-hero-metrics">
+            <div>
+              <Building2 size={16} />
+              <span>{clients.length} client records</span>
             </div>
-          }
-        />
+            <div>
+              <UserRoundPlus size={16} />
+              <span>Fast onboarding forms</span>
+            </div>
+            <div>
+              <PencilLine size={16} />
+              <span>Inline profile maintenance</span>
+            </div>
+          </div>
+        </Card>
 
         {params?.error ? <p className="error">{params.error}</p> : null}
         {params?.success ? <p className="success">{params.success}</p> : null}
@@ -189,65 +206,67 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
           )}
         </Card>
 
-        {clients.map((client) => (
-          <Card className="section-card-modern" key={`edit-${client.id}`}>
-            <SectionHeader
-              title={`Edit ${client.business_name}`}
-              description="Update account owner and business details."
-            />
-            <form action={updateClient} className="form-grid-modern">
-              <Input name="clientId" type="hidden" value={client.id} />
-              <div className="form-row-two">
+        <section className="client-edit-grid">
+          {clients.map((client) => (
+            <Card className="section-card-modern" key={`edit-${client.id}`}>
+              <SectionHeader
+                title={`Edit ${client.business_name}`}
+                description="Update account owner and business details."
+              />
+              <form action={updateClient} className="form-grid-modern">
+                <Input name="clientId" type="hidden" value={client.id} />
+                <div className="form-row-two">
+                  <label>
+                    Client Name
+                    <Input defaultValue={client.client_name} name="clientName" required />
+                  </label>
+                  <label>
+                    Business Name
+                    <Input defaultValue={client.business_name} name="businessName" required />
+                  </label>
+                </div>
+                <div className="form-row-two">
+                  <label>
+                    Contact Email
+                    <Input
+                      defaultValue={client.contact_email ?? ""}
+                      name="contactEmail"
+                      type="email"
+                    />
+                  </label>
+                  <label>
+                    Phone
+                    <Input defaultValue={client.phone ?? ""} name="phone" />
+                  </label>
+                </div>
+                <div className="form-row-two">
+                  <label>
+                    Country
+                    <Input defaultValue={client.country ?? ""} name="country" />
+                  </label>
+                  <label>
+                    Timezone
+                    <Input defaultValue={client.timezone ?? ""} name="timezone" />
+                  </label>
+                </div>
                 <label>
-                  Client Name
-                  <Input defaultValue={client.client_name} name="clientName" required />
-                </label>
-                <label>
-                  Business Name
-                  <Input defaultValue={client.business_name} name="businessName" required />
-                </label>
-              </div>
-              <div className="form-row-two">
-                <label>
-                  Contact Email
-                  <Input
-                    defaultValue={client.contact_email ?? ""}
-                    name="contactEmail"
-                    type="email"
+                  Notes
+                  <textarea
+                    className="ui-input ui-textarea"
+                    defaultValue={client.notes ?? ""}
+                    name="notes"
+                    rows={3}
                   />
                 </label>
-                <label>
-                  Phone
-                  <Input defaultValue={client.phone ?? ""} name="phone" />
-                </label>
-              </div>
-              <div className="form-row-two">
-                <label>
-                  Country
-                  <Input defaultValue={client.country ?? ""} name="country" />
-                </label>
-                <label>
-                  Timezone
-                  <Input defaultValue={client.timezone ?? ""} name="timezone" />
-                </label>
-              </div>
-              <label>
-                Notes
-                <textarea
-                  className="ui-input ui-textarea"
-                  defaultValue={client.notes ?? ""}
-                  name="notes"
-                  rows={3}
-                />
-              </label>
-              <div className="inline-form-actions">
-                <Button type="submit" variant="secondary">
-                  Save Changes
-                </Button>
-              </div>
-            </form>
-          </Card>
-        ))}
+                <div className="inline-form-actions">
+                  <Button type="submit" variant="secondary">
+                    Save Changes
+                  </Button>
+                </div>
+              </form>
+            </Card>
+          ))}
+        </section>
       </div>
     </DashboardShell>
   );

@@ -1,4 +1,11 @@
 import { redirect } from "next/navigation";
+import {
+  Activity,
+  ArrowUpRight,
+  CircleCheckBig,
+  Sparkles,
+  UsersRound
+} from "lucide-react";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -77,19 +84,35 @@ export default async function CommandCenterPage() {
   return (
     <DashboardShell userName={userName} workspaceName={workspace.name}>
       <div className="dashboard-stack">
-        <PageHeader
-          eyebrow="Business Command Center"
-          title={greeting}
-          subtitle="Welcome back to VukaSync."
-          actions={
-            <div className="header-chip-row">
-              <Badge>{workspace.name}</Badge>
-              <Badge tone={user.email_confirmed_at ? "success" : "accent"}>
-                {user.email_confirmed_at ? "Email Verified" : "Verification Pending"}
-              </Badge>
+        <Card className="command-hero-card">
+          <PageHeader
+            eyebrow="Business Command Center"
+            title={greeting}
+            subtitle="Welcome back to VukaSync."
+            actions={
+              <div className="header-chip-row">
+                <Badge>{workspace.name}</Badge>
+                <Badge tone={user.email_confirmed_at ? "success" : "accent"}>
+                  {user.email_confirmed_at ? "Email Verified" : "Verification Pending"}
+                </Badge>
+              </div>
+            }
+          />
+          <div className="command-hero-metrics">
+            <div>
+              <Sparkles size={16} />
+              <span>Premium operational clarity</span>
             </div>
-          }
-        />
+            <div>
+              <UsersRound size={16} />
+              <span>Team coordination in real time</span>
+            </div>
+            <div>
+              <Activity size={16} />
+              <span>Live service and activity telemetry</span>
+            </div>
+          </div>
+        </Card>
 
         <section>
           <SectionHeader
@@ -101,6 +124,7 @@ export default async function CommandCenterPage() {
               <Card className="kpi-card" key={item.label}>
                 <p className="kpi-label">{item.label}</p>
                 <p className="kpi-value">{item.value}</p>
+                <p className="kpi-trend">Updated moments ago</p>
               </Card>
             ))}
           </div>
@@ -141,7 +165,10 @@ export default async function CommandCenterPage() {
             ) : (
               <ul className="service-pill-list">
                 {activeServices.map((service) => (
-                  <li key={service.id}>{service.catalog_service?.name ?? service.id}</li>
+                  <li key={service.id}>
+                    <CircleCheckBig size={14} />
+                    {service.catalog_service?.name ?? service.id}
+                  </li>
                 ))}
               </ul>
             )}
@@ -180,19 +207,19 @@ export default async function CommandCenterPage() {
             />
             <div className="quick-actions-modern">
               <Button href="/clients" variant="secondary">
-                Add Client
+                Add Client <ArrowUpRight size={14} />
               </Button>
               <Button
                 href={`/service-selection?workspace=${workspaceId}&mode=manage`}
                 variant="secondary"
               >
-                Add Service
+                Add Service <ArrowUpRight size={14} />
               </Button>
               <Button href="/team/invite" variant="secondary">
-                Invite Team Member
+                Invite Team Member <ArrowUpRight size={14} />
               </Button>
               <Button href="/command-center#reports" variant="secondary">
-                View Reports
+                View Reports <ArrowUpRight size={14} />
               </Button>
             </div>
             <form action="/auth/logout" method="post">

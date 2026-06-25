@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LockKeyhole, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -21,8 +22,27 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const nextPath = params?.next ?? "/onboarding";
 
   return (
-    <main className="auth-page">
-      <div className="auth-page-inner">
+    <main className="auth-shell">
+      <section className="auth-shell-panel">
+        <p className="auth-shell-kicker">VukaSync OS</p>
+        <h1>Secure workspace access for modern operators.</h1>
+        <p>
+          Continue where you left off with a premium command center built for service-driven
+          businesses.
+        </p>
+        <ul>
+          <li>
+            <Sparkles size={16} />
+            Unified business operations
+          </li>
+          <li>
+            <LockKeyhole size={16} />
+            Authenticated enterprise sessions
+          </li>
+        </ul>
+      </section>
+
+      <section className="auth-shell-form">
         <PageHeader
           title="Welcome back"
           subtitle="Sign in to access your workspace and business command center."
@@ -54,7 +74,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         <p className="auth-footer">
           No account yet? <Link href="/signup">Create one</Link>.
         </p>
-      </div>
+      </section>
     </main>
   );
 }
