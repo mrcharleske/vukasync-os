@@ -145,8 +145,7 @@ export default async function SocialAccountsPage({
               <div className="form-row-two">
                 <label>
                   Client
-                  <select className="ui-input" name="clientId" required>
-                    <option value="">Select client</option>
+                  <select className="ui-input" defaultValue={clients[0]?.id} name="clientId" required>
                     {clients.map((client) => (
                       <option key={client.id} value={client.id}>
                         {client.business_name}
@@ -158,11 +157,10 @@ export default async function SocialAccountsPage({
                   Platform
                   <select
                     className="ui-input"
-                    defaultValue={selectedPlatform ?? ""}
+                    defaultValue={selectedPlatform ?? SOCIAL_PLATFORMS[0]}
                     name="platform"
                     required
                   >
-                    <option value="">Select platform</option>
                     {SOCIAL_PLATFORMS.map((platform) => (
                       <option key={platform} value={platform}>
                         {platform}
